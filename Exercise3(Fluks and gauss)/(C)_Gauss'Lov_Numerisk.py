@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 ###############################################################################
 # Definerer variabler for detaljer
 
-x_range = y_range = [-4, 4]  # Definerer x,y,z aksen
+x_range = y_range =z_range= [-3, 3]  # Definerer x,y,z aksen
 step = 100  # Definer eksakt antall punkter på området
 ###############################################################################
 
@@ -17,8 +17,18 @@ Z = 2 * np.ones_like(X)
 ###############################################################################
 ###############################################################################
 # Funksjon for å beregne numerisk fluks
-def F(x, y, z):
-    return np.array([2 * x, 7 * y, z])
+def E_field(x, y, z):
+    return np.array([x**2, y*z, -z**2])
+R=3
+ø=[0,np.pi]
+t= [0,np.2pi]
+x=R*np.cos(O)*np.sin(ø)
+y=R*np.sin(O)*np.sin(ø)
+z=R*np.cos(ø)
+dOmega = R**2*(np.sin(ø)**2)d
+def Total_fluks(E,r,ø,O): 
+    Fluks = 
+    return  
 
 
 ###############################################################################

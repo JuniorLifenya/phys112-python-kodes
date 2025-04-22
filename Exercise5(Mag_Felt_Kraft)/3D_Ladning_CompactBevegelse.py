@@ -53,7 +53,7 @@ def update(frame):
     ax.set_zlabel("z")
 
     # Plot the moving charge
-    ax.scatter(pos[0], pos[1], pos[2], color="red", s=100, label="Moving Charge")
+    ax.scatter(pos[0], pos[1], pos[2], color="red", s=200, label="Moving Charge")
 
     # Plot magnetic field lines around the charge (3D circular loops)
     for theta in np.linspace(0, np.pi, 15):  # Latitude angle
@@ -66,11 +66,11 @@ def update(frame):
             B = magnetic_field(r, v, q)  # Magnetic field at this point
             ax.quiver(
                 x, y, z, B[0], B[1], B[2],
-                length=0.6, normalize=True, color="green", alpha=0.9
+                length=0.6, normalize=True, color="green", alpha=0.5
             )
     
     ax.legend()
 
 # Run animation
-ani = animation.FuncAnimation(fig, update, frames=50, interval=200, repeat=True)
+ani = animation.FuncAnimation(fig, update, frames=120, interval=10, repeat=True)
 plt.show()

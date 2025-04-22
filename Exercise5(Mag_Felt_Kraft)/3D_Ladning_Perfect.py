@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from mpl_toolkits.mplot3d import Axes3D
 
 # Define charge properties
 q = 1  # Charge magnitude
@@ -72,5 +71,5 @@ def update(frame):
     ax.legend()
 
 # Run animation
-ani = animation.FuncAnimation(fig, update, frames=120, interval=20, repeat=True)
+ani = animation.FuncAnimation(fig, update, frames=320, interval=10, repeat=True)
 plt.show()
