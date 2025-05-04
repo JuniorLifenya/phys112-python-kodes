@@ -34,7 +34,7 @@ def update(frame):
 
     # Clear the plot
     ax.clear()
-    ax.set_xlim(-5, 5)
+    ax.set_xlim(-5, 5) #Calling them in each frame in case they change( they dont ), needed for more adbanced code. 
     ax.set_ylim(-5, 5)
     ax.set_xlabel("x")
     ax.set_ylabel("y")
@@ -63,7 +63,7 @@ def update(frame):
             cross[0], cross[1], "×", fontsize=12, ha="center", va="center", color="red"
         )  # Crosses
 
-    ax.legend()
+    ax.legend() #Also added in every frame but not needed really. 
 
 
 # Run animation

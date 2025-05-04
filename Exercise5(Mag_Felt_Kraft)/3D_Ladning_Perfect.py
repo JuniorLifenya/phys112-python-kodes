@@ -13,12 +13,6 @@ mu_0 = 4 * np.pi * 1e-7  # Permeability of free space
 # Initialize 3D plot
 fig = plt.figure(figsize=(8, 8))
 ax = fig.add_subplot(111, projection="3d")
-ax.set_xlim(-5, 5)
-ax.set_ylim(-5, 5)
-ax.set_zlim(-5, 5)
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-ax.set_zlabel("z")
 
 # Function to calculate magnetic field due to moving charge
 def magnetic_field(r, v, q):
