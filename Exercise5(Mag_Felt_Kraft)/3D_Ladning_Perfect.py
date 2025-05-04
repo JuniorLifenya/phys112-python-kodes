@@ -67,3 +67,4 @@ def update(frame):
 # Run animation
 ani = animation.FuncAnimation(fig, update, frames=320, interval=10, repeat=True)
 plt.show()
+

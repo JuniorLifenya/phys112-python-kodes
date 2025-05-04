@@ -99,3 +99,6 @@ def update(frame):
 # Run animation
 ani = animation.FuncAnimation(fig, update, frames=50, interval=200, repeat=True)
 plt.show()
+import os
+print("Saved to:", os.getcwd())
+ani.save("3D(+-).gif", writer='pillow', fps=10)
