@@ -2,17 +2,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-# Define charge properties
-q = 1  # Charge magnitude
-v = np.array([1, 0])  # Velocity vector (moving to the right)
-pos = np.array([-5, 0])  # Initial position
 
-# Initialize plot
+
+# Initialize plot. Size and restricted area
 fig, ax = plt.subplots(figsize=(6, 6))
 ax.set_xlim(-5, 5)
 ax.set_ylim(-5, 5)
 ax.set_xlabel("x")
 ax.set_ylabel("y")
+
+# Define charge properties
+q = 1  # Charge magnitude, needed for later
+v = np.array([1, 0])  # Velocity vector (moving to the right)
+pos = np.array([-5, 0])  # Initial position
+
+
 
 # Store all dots and crosses
 dots = []  # Stores (x, y) positions of dots
@@ -21,7 +25,7 @@ crosses = []  # Stores (x, y) positions of crosses
 
 # Animation update function
 def update(frame):
-    global pos, dots, crosses
+    global pos, dots, crosses # Allows us to directly modify the external variables. Without it changes would not affect the actual pos,dots,cross. Each update would start from scratch without it
 
     # Update charge position
     pos[0] += v[0]  # Move charge to the right
