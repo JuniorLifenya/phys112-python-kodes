@@ -6,10 +6,7 @@ import matplotlib.animation as animation
 
 # Initialize plot. Size and restricted area
 fig, ax = plt.subplots(figsize=(6, 6))
-ax.set_xlim(-5, 5)
-ax.set_ylim(-5, 5)
-ax.set_xlabel("x")
-ax.set_ylabel("y")
+
 
 # Define charge properties
 q = 1  # Charge magnitude, needed for later

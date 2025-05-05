@@ -9,10 +9,6 @@ pos = np.array([5, 0])  # Initial position
 
 # Initialize plot
 fig, ax = plt.subplots(figsize=(6, 6))
-ax.set_xlim(-5, 5)
-ax.set_ylim(-5, 5)
-ax.set_xlabel("x")
-ax.set_ylabel("y")
 
 # Store all dots and crosses
 dots = []  # Stores (x, y) positions of dots
