@@ -2,15 +2,17 @@
 ###############################################################################
 import math as m
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd 
 
-#########################################################
+###############################################################################
+###############################################################################
 
 # Definerer variabler
 xrange = [-13, 13]  # Definerer x aksen
 yrange = [-13, 13]  # Definerer y aksen
 step = 200  # Definer antall punkter på retningsfeltet
+
 ###############################################################################
 ###############################################################################
 
@@ -23,11 +25,11 @@ X, Y = np.meshgrid(Xlist, Ylist)
 
 ################ Våre funksjoner som skal plottes  ############
 
-U = X - Y
-V = X + 3 * Y
+U = 2*X
+V = -2*Y 
 f = X**2 - Y**2
 
-################ Plotting av retningsfeltet(ax1) og nivåkurve(ax2) #################
+################ Plotting av retningsfeltet(ax1) og nivåkurve(ax2) ##############
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
 
 
@@ -37,6 +39,8 @@ Retningsfelt = ax1.streamplot(
     X, Y, U, V, color="black", linewidth=1, density=3, arrowstyle="->", arrowsize=1
 )
 
+##################################################################################
+##################################################################################
 
 ################ Plot instillinger #################
 ax1.set_title("Retningsfelt")
@@ -44,3 +48,6 @@ ax2.set_title("Nivåkurve")
 fig.supxlabel("X-akse")
 fig.supylabel("Y-akse")
 plt.show()
+
+##################################################################################
+##################################################################################

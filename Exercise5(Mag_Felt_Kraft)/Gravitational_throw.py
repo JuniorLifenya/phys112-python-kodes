@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
-
+import os
 
 
 fig, ax = plt.subplots()
@@ -33,4 +33,5 @@ def update(frame):
 
 
 ani = animation.FuncAnimation(fig=fig, func=update, frames=40, interval=30)
+ani.save("Grav_throw.gif" , writer='pillow', fps=20)
 plt.show()

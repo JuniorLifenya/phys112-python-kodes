@@ -56,7 +56,7 @@ def update(frame):
     ax.scatter(pos[0], pos[1], pos[2], color="red", s=200, label="Moving Charge")
 
     # Plot magnetic field lines around the charge (3D circular loops)
-    for theta in np.linspace(0, np.pi, 15):  # Latitude angle
+    for theta in np.linspace(0, np.pi, 4):  # Latitude angle
         for phi in np.linspace(0, 2*np.pi, 15):  # Azimuthal angle
             r_val = 2  # Fixed radius for visualization
             x = pos[0] + r_val * np.sin(theta) * np.cos(phi)
