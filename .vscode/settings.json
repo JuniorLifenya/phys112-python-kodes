@@ -61,17 +61,21 @@
         "liste",
         "logspace",
         "Magnituden",
+        "matplotlib",
         "mellom",
         "meshgrid",
         "mplot",
         "nivåkurve",
         "numerisk",
+        "numpy",
         "området",
         "oppløsning",
         "Origo",
+        "plottes",
         "posisjoner",
         "posisjons",
         "punkter",
+        "pyplot",
         "qrange",
         "resultatet",
         "retning",
@@ -89,6 +93,7 @@
         "streamplot",
         "summen",
         "Summerer",
+        "supxlabel",
         "teorien",
         "toolkits",
         "uendelig",
@@ -104,6 +109,7 @@
         "vinkler",
         "xlabel",
         "Xlist",
+        "xrange",
         "ylabel",
         "Ylist",
         "yrange",
@@ -113,5 +119,9 @@
     ],
     "files.associations": {
         "nonzero.C": "cpp"
-    }
+    },
+    "liveServer.settings.port": 5501,
+    
+
 }
+
