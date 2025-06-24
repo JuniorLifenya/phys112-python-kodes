@@ -15,11 +15,15 @@ q_name = Q["name"].to_numpy()
 q_v = Q["charge"].to_list()
 pos_x = Q["pos_x"].to_list()
 pos_y = Q["pos_y"].to_list()
-
 q = np.array([[(pos_x[i]), (pos_y[i]), (q_v[i]) * 10**9] for i in range(0, 7)])
 
-# q = np.array([[1, 1, -3], [3, 3, 4.21], [6, 1, -3], [3, -1, 4.21]])
-# qrange = [-3, 3]  # Code for making a random amount of charges
+############################################################################################################
+############################################################################################################
+# For random amount of 6 charges: 
+#charge_range = [-5, 5]  # In statC
+#num_charges = 6  # <--- Change number of random charges here
+#q = np.column_stack([np.random.uniform(xrange[0], xrange[1], num_charges),  # xnp.random.uniform(yrange[0], yrange[1], num_charges),  # ynp.random.uniform(charge_range[0], charge_range[1], num_charges)  # q])
+
 print(q)
 
 ###########################################################################################################
