@@ -26,17 +26,15 @@ gamma = 0.2
 def B_felt(t,r):
     x, y = r
     const_B = [0.0, 0.0, B0] # Uniform sircular motion
-    var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion outward
+    var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion 
     return np.array(var_B) 
-    
-def f(t, r, v):  # dv/dt = (q/m) * v x B
+
+def f(t, r, v):
     B = B_felt(t, r)
-    v3d = np.array([v[0], v[1], 0.0])  # pad v to 3D
-    cross = np.cross(v3d, B)
+    v3d = np.array([v[0], v[1], 0.0])
     force = q/m * np.cross(v3d, B)
     drag = -gamma * v  # gamma = damping coefficient
-    return force[:2] + drag #For inward spiral motion
-    #return (q / m) * cross[:2]  # return only x,y parts (2D vector)
+    return force[:2] + drag
 
 #############################################################################################
 #############################################################################################
@@ -97,7 +95,7 @@ n = int (input ( " Please enter number of iterations ")) #For watching EVERY ste
 v0 = np.array([0.0, 1.0])  # vx0, vy0
 r0 = np.array([0.0, 0.0])  # x0, y0
 t0 = 0.0
-h = 0.01 # Gives different effects like deeper spiral , etc 
+h = 0.01
 # Run simulation
 t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
 
