@@ -95,7 +95,7 @@ n = int (input ( " Please enter number of iterations ")) #For watching EVERY ste
 v0 = np.array([0.0, 1.0])  # vx0, vy0
 r0 = np.array([0.0, 0.0])  # x0, y0
 t0 = 0.0
-h = 0.01
+h = 0.05
 # Run simulation
 t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
 

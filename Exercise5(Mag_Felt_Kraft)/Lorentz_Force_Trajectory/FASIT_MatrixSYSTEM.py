@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 q = 1.0
 m = 1.0
 B0 = 2.0 
-gamma = 0.2
+
 #############################################################################################
 #############################################################################################
 # Define the functions for the system of ODEs
@@ -27,15 +27,12 @@ def B_felt(t,r):
     x, y = r
     const_B = [0.0, 0.0, B0] # Uniform sircular motion
     var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion outward
-    return np.array(const_B) 
+    return np.array(var_B) 
     
 def f(t, r, v):  # dv/dt = (q/m) * v x B
     B = B_felt(t, r)
     v3d = np.array([v[0], v[1], 0.0])  # pad v to 3D
     cross = np.cross(v3d, B)
-    force = q/m * np.cross(v3d, B)
-    drag = -gamma * v  # gamma = damping coefficient
-    #return force[:2] + drag #For inward spiral motion
     return (q / m) * cross[:2]  # return only x,y parts (2D vector)
 
 #############################################################################################
