@@ -67,7 +67,7 @@ def update(frame):
 
 ani = animation.FuncAnimation(
     fig, update, frames=tot_steps,
-    init_func=init, blit=True, interval=20
+    init_func=init, blit=True, interval=.50
 )
 plt.show()
 
@@ -172,7 +172,7 @@ def update(frame):
 # Lag animasjon
 ani = animation.FuncAnimation(
     fig, update, frames=range(0, tot_steps, 5),  # Hopp over noen rammer for raskere visning
-    init_func=init, blit=True, interval=20
+    init_func=init, blit=True, interval=.50
 )
 
 plt.tight_layout()
