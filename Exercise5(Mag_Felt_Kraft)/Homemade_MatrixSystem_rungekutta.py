@@ -20,10 +20,9 @@ def f(t,x,y):
 def g(t,x,y):
     return 3 * x + 2 * y
 
-n = int (input ( " Please enter number of iterations "))
 
 
-def Runge_Kutta(t0,x0,y0,h):
+def Runge_Kutta_system(t0,x0,y0,h,n):
 
     
     t = np.zeros(n+1)
@@ -55,8 +54,9 @@ def Runge_Kutta(t0,x0,y0,h):
         t[i+1] = t[i] + h 
     return t,x,y
 
+n = int (input ( " Please enter number of iterations "))
 
-t,x, y = Runge_Kutta(0.0, 6.0,4.0, 0.02)
+t,x, y = Runge_Kutta_system(0.0, 6.0,4.0, 0.02,n)
 
 # Convert to Python lists
 t_list = t.tolist()
@@ -66,3 +66,4 @@ print("t =", t_list[:20])
 print("x =", x_list[:20])
 print("y =", y_list[:20])
 
+#####################################################################
