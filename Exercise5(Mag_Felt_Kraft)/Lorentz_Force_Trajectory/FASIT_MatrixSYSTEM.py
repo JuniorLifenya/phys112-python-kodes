@@ -98,6 +98,22 @@ h = 0.01 # Gives different effects like deeper spiral , etc
 # Run simulation
 t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
 
+##################################################################
+# Moving animation man 
+from matplotlib.animation import FuncAnimation
+fig, ax = plt.subplots()
+line, = ax.plot([], [], 'o-')
+ax.set_xlim(-1.5, 1.5)
+ax.set_ylim(-1.5, 1.5)
+
+def animate(i):
+    line.set_data(r_vals[:i,0], r_vals[:i,1])
+    return line,
+
+ani = FuncAnimation(fig, animate, frames=len(t_vals), 
+                    interval=20, blit=True)
+plt.show()
+######################################################################
 # Plot trajectory
 x_vals = r_vals[:, 0]
 y_vals = r_vals[:, 1]

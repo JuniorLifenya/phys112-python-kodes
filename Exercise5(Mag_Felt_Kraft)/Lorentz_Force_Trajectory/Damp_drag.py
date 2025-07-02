@@ -82,14 +82,7 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 
 
 n = int (input ( " Please enter number of iterations ")) #For watching EVERY step(like teacher wanted)
-
-# For perfect sircle motion #####################################
-
-#period = 2 * np.pi / (q * B0 / m)  # 2*pi / omega_c
-#tf = period * 1  # for one full circle
-#h = 0.01
-#n = int(tf / h)
-#################################################################
+#############################################################################################
 
 # Initial values
 v0 = np.array([0.0, 1.0])  # vx0, vy0
@@ -98,6 +91,25 @@ t0 = 0.0
 h = 0.05
 # Run simulation
 t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
+
+#############################################################################################
+
+# Moving animation man 
+from matplotlib.animation import FuncAnimation
+fig, ax = plt.subplots()
+line, = ax.plot([], [], 'o-')
+ax.set_xlim(-1.5, 1.5)
+ax.set_ylim(-1.5, 1.5)
+
+def animate(i):
+    line.set_data(r_vals[:i,0], r_vals[:i,1])
+    return line,
+
+ani = FuncAnimation(fig, animate, frames=len(t_vals), 
+                    interval=20, blit=True)
+plt.show()
+
+#############################################################################################
 
 # Plot trajectory
 x_vals = r_vals[:, 0]

@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+#############################################################################################
 
 # Constants
 q = 1.0
@@ -11,6 +12,8 @@ t0 = 0.0
 tf = 4 * np.pi  # Two full cycles of the figure-eight
 h = 0.01
 n_steps = int((tf - t0) / h)
+
+#############################################################################################
 
 # Field functions
 def E_field(t):
@@ -32,6 +35,8 @@ def f(t, r, v):  # dv/dt = q/m (E + v × B)
 def g(t, r, v):  # dr/dt = v
     return v
 
+#############################################################################################
+#############################################################################################
 # Runge-Kutta solver
 def rk4_system(t0, r0, v0, h, n):
     t = np.zeros(n+1)
@@ -73,6 +78,30 @@ t0 = 0.0
 # Run simulation
 t_vals, r_vals, v_vals = rk4_system(t0, r0, v0, h, n_steps)
 
+from matplotlib.animation import FuncAnimation
+
+
+fig, ax = plt.subplots()
+line, = ax.plot([], [], 'o-')
+ax.set_xlim(-1.5, 1.5)
+ax.set_ylim(-1.5, 1.5)
+
+#############################################################################################
+#############################################################################################
+
+# Auto animation man###########################################
+
+def animate(i):
+    line.set_data(r_vals[:i,0], r_vals[:i,1])
+    return line,
+
+ani = FuncAnimation(fig, animate, frames=len(t_vals), 
+                    interval=20, blit=True)
+plt.show()
+
+#############################################################################################
+#############################################################################################
+
 # Plot
 plt.figure(figsize=(10, 5))
 plt.subplot(1, 2, 1)
@@ -83,32 +112,7 @@ plt.ylabel("y")
 plt.gca().set_aspect('equal')
 plt.grid(True)
 
-# Plot components vs time
-plt.subplot(1, 2, 2)
-plt.plot(t_vals, r_vals[:, 0], 'r-', label='x position')
-plt.plot(t_vals, r_vals[:, 1], 'b-', label='y position')
-plt.title("Position vs Time")
-plt.xlabel("Time")
-plt.ylabel("Position")
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.show()
 
-# Energy analysis
-kinetic_energy = 0.5 * m * np.sum(v_vals**2, axis=1)
-potential_energy = -q * np.array([np.dot(r_vals[i], E_field(t_vals[i])) for i in range(len(t_vals))])
-
-plt.figure(figsize=(10, 5))
-plt.subplot(1, 2, 1)
-plt.plot(t_vals, kinetic_energy, 'r-', label='Kinetic Energy')
-plt.plot(t_vals, potential_energy, 'b-', label='Potential Energy')
-plt.plot(t_vals, kinetic_energy + potential_energy, 'g-', label='Total Energy')
-plt.title("Energy Conservation")
-plt.xlabel("Time")
-plt.ylabel("Energy")
-plt.legend()
-plt.grid(True)
 
 # Phase space plot
 plt.subplot(1, 2, 2)
@@ -121,3 +125,6 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+
+#############################################################################################
+#############################################################################################
