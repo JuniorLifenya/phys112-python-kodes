@@ -50,6 +50,8 @@ line, = ax.plot([], [], 'r-', lw=2, label='Bane')
 point, = ax.plot([], [], 'bo', ms=6, label='Partikkel')
 ax.legend(loc='upper right')
 
+ax = fig.add_subplot(111,projection="3d")
+
 # Initialiseringsfunksjon
 def init():
     line.set_data([], [])

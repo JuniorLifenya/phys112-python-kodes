@@ -118,6 +118,7 @@
         "Xlist",
         "xrange",
         "ylabel",
+        "ylim",
         "Ylist",
         "yrange",
         "zlabel",
