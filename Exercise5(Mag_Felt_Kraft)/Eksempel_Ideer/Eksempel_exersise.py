@@ -17,15 +17,11 @@ omega_g = -G * m1*m2 / r21**3
 v0 = np.array([5.0, 5.0])  # vx0, vy0
 r0 = np.array([0.0, 0.0])  # x0, y0
 t0 = 0.0
-h = 0.01 # Gives different effects like deeper spiral , etc 
-n = int (input ( " Please enter number of iterations ")) 
+tf = 20.0
+h = 0.1 # Gir Antall sekunder mellom hver tidspunkt
+n= int((tf - t0) / h) #Eksakt antall tidspunkter
 
 #############################################################################################
-def G_felt(t,r,v):
-    x, y = r
-    uniform_G = [0.0 ,0.0, omega_g] # Uniform sircular motion
-    return np.array(uniform_G) 
-    
 def f(t, r, v):  # dv/dt = -(Gm2)/(r21)^3
     simpel_gravity = np.array([0.0,-9.81])
     return simpel_gravity 
@@ -39,8 +35,7 @@ def g(t, r, v): #drdt really
 
 def Runge_Kutta_system(t0,r0,v0,h,n):
 
-    #t0,tf = 0.0 , 20.0
-    #n= int((tf - t0) / h) #Alternative 
+
     
     t = np.zeros(n+1)
     r = np.zeros((n+1,2)) # Because we have 2 dimensions
@@ -99,7 +94,7 @@ y_vals = r_vals[:, 1]
 from matplotlib.animation import FuncAnimation
 fig, ax = plt.subplots()
 line, = ax.plot([], [], 'o-')
-ax.set_xlim(-2.5, 10)
+ax.set_xlim(-1, 10)
 ax.set_ylim(-5, 5)
 
 def animate(i):
@@ -107,7 +102,7 @@ def animate(i):
     return line,
 
 ani = FuncAnimation(fig, animate, frames=len(t_vals), 
-                    interval=10, blit=True)
+                    interval=20, blit=True)
 
 
 plt.plot(x_vals, y_vals,color= "red")
@@ -116,6 +111,7 @@ plt.title("Charged Particle in Magnetic Field")
 plt.xlabel("r")
 plt.ylabel("v")
 plt.grid(True)
+ani.save("Grav_throw1.gif" , writer='pillow', fps=20)
 plt.show()
 
 #############################################################################################
