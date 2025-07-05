@@ -1,58 +1,42 @@
-import math as m 
-import numpy as np 
+import numpy as np
 import matplotlib.pyplot as plt
 
 #############################################################################################
 #############################################################################################
 
-## Now ULTIMATELY we look at SYSTEMS of vector ode #############
-
-# This code solves a system of ordinary differential equations using the Runge-Kutta method.
-# For systems like this one here :
-# dx/dt = f(t,x,y,z) = x + 2 * y
-# dy/dt = g(t,x,y,z) = 3*x+2*y
-
-#############################################################################################
-#############################################################################################
-
-q = 1.0
-m = 1.0
-B0 = 2.0 
-
-# Initial values
-v0 = np.array([0.0, 1.0,0.0])  # vx0, vy0, vz0
-r0 = np.array([0.0, 0.0,0.0])  # x0, y0
-t0 = 0.0
-h = 0.01 # Gives different effects like deeper spiral , etc 
-
-#############################################################################################
-#############################################################################################
 # Define the functions for the system of ODEs
+# Initial values
 
-def B_felt(t,r,v):
-    x, y, z = r
-    const_B = [0.0, 0.0, B0] # Uniform sircular motion
-    var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion outward
-    return np.array(const_B) 
-    
-def f(t, r, v):
-    B = B_felt(t, r, v)
-    return (q / m) * np.cross(v, B)
+# Constants
+r21 = 6.4e6
+m1 = 0.45    # mass
+m2 = 5.97e24
+G  = 6.674e-11
+omega_g = -G * m1*m2 / r21**3
 
+r0 = np.array([0.0, 0.0]) 
+v0 = np.array([5.0, 5.0])
+t0 = 0.0
+tf = 8.0
+h = 0.1 # Gir Antall sekunder mellom hver tidspunkt, bestemmer diskretisering
+n = int((tf - t0) / h) #Eksakt antall tidspunkter
 #############################################################################################
-#############################################################################################
+def f(t, r, v):  # dv/dt = -(Gm2)/(r21)^3
+    simpel_gravity = np.array([0.0,-9.81])
+    return simpel_gravity 
 
 def g(t, r, v): #drdt really 
     return v
 
-def Runge_Kutta_system(t0,r0,v0,h,n):
+#############################################################################################
+#############################################################################################
 
-    #t0,tf = 0.0 , 20.0
-    #n= int((tf - t0) / h) #Alternative 
+
+def Runge_Kutta_system(t0,r0,v0,h,n):
     
     t = np.zeros(n+1)
-    r = np.zeros((n+1,3))
-    v = np.zeros((n+1,3))
+    r = np.zeros((n+1,2)) # Because we have 2 dimensions
+    v = np.zeros((n+1,2)) # Because we have v = [vx,vy]
 
     t[0] = t0
     r[0] = r0 
@@ -85,41 +69,55 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 
 #For watching EVERY step(like teacher wanted)
 
-n = int (input ( " Please enter number of iterations ")) 
-
 # For perfect sircle motion ##################################################################
 
 #period = 2 * np.pi / (q * B0 / m)  # 2*pi / omega_c
 #tf = period * 1  # for one full circle
 #h = 0.01
 #n = int(tf / h)
-#############################################################################################
 
+#############################################################################################
 
 # Run simulation
-t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n) # This is our state 
+t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0,h,n)
+
 
 #############################################################################################
 
-# Plot trajectory
+# Hent verdier for projeksjonen : husk at de ser slik ut
+# r_vals = [[x0, y0],[x1, y1],[x2, y2], ...] , så verdiene våre er inni disse listene
+
+
+# Derfor henter vi slik, ved slicing 
 x_vals = r_vals[:, 0]
 y_vals = r_vals[:, 1]
-z_vals = r_vals[:, 1]
 
-def kinetic_energy(v):
-    return 0.5 * m * np.dot(v, v)
+# Nå ser de slik ut :
+# x_vals = [x0, x1, x2, ...] 
+# y_vals = [y0, y1, y2, ...] 
 
-print("Initial KE:", kinetic_energy(v0))
-print("Final KE:", kinetic_energy(v_vals[-1]))
+x_analytic = 5.0 * 8
+y_analytic = 5.0 * 8 - 0.5 * 9.81 * 8**2
+print(f"For h = {h}\n")
+print(f"analytisk x(8), y(8): ({x_analytic:.3f}{y_analytic:.3f}) m")
 
-#############################################################################################
+x_estimert=r_vals[-1][0]
+y_estimert=r_vals[-1][1]
+print(f"Slutt-posisjon (x,y) etter 8 sekunder: ({x_estimert:.3f},{y_estimert:.3f}) m \n")
+
+
+
+
+###############################################################################################
+# Plotting og animasjon
 
 # Moving animation man 
 from matplotlib.animation import FuncAnimation
 fig, ax = plt.subplots()
 line, = ax.plot([], [], 'o-')
-ax.set_xlim(-1.5, 1.5)
-ax.set_ylim(-1.5, 1.5)
+
+ax.set_xlim(-1, 10)
+ax.set_ylim(-5, 5)
 
 def animate(i):
     line.set_data(r_vals[:i,0], r_vals[:i,1])
@@ -128,21 +126,23 @@ def animate(i):
 ani = FuncAnimation(fig, animate, frames=len(t_vals), 
                     interval=20, blit=True)
 
+# Beregn kinetisk energi
+
+def kinetic_energy(v):
+    return 0.5 * m1 * np.dot(v, v)
+print("Slutthastighet (vx,vy) etter 8 sekunder:", v_vals[-1], "m/s ")
+print("Initial KE:", kinetic_energy(v0))
+print("Final KE:", kinetic_energy(v_vals[-1]))
+
 
 plt.plot(x_vals, y_vals,color= "red")
 plt.gca().set_aspect('equal')
-plt.title("Charged Particle in Magnetic Field")
-plt.xlabel("r")
-plt.ylabel("v")
+plt.title("Partikkelbane i gravitasjonsfelt")
+plt.xlabel("x (m)")
+plt.ylabel("y (m)")
 plt.grid(True)
+ani.save("Grav_throw1.gif" , writer='pillow', fps=20)
 plt.show()
 
-# At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals
-
-#############################################################################################
-
-
-
-#############################################################################################
 #############################################################################################
 
