@@ -27,7 +27,7 @@ n_steps = int(input(f"Number of steps "))
 #############################################################################################
 
 # Right-hand side of the system: returns [dvx/dt, dvy/dt, dx/dt, dy/dt]
-def simple_grav(state, t):
+def f(state, t): #simple_grav
 
     vx, vy, x, y = state # A very cool way to define a vector right called UNPACKING
     # So really what we want in the end is state = [vx,vy,x,y] unpacking makes it possible 
@@ -38,7 +38,7 @@ def simple_grav(state, t):
     dx = vx
     dy = vy
 
-    return np.array([dvx, dvy, dx, dy])
+    return np.array([dvx, dvy, dx, dy]) # Return the derivatives as an array
 
 # RK4 step for vector-valued state
 def rk4_step(f, state, t, h):
@@ -61,7 +61,7 @@ times = np.linspace(t0, tf, n_steps + 1)
 
 # Run simulation
 for i in range(n_steps):
-    state = rk4_step(simple_grav, state, times[i], h)
+    state = rk4_step(f, state, times[i], h)
     trajectory[i+1] = state
 
 # Extract positions

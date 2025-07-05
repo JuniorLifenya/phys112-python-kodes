@@ -69,7 +69,7 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
         G2 = g(ti + h/2, ri + h*G1/2, vi + h*K1/2)
 
         K3 = f(ti + h/2, ri + h*G2/2, vi + h*K2/2)
-        G3 = g(ti + h/2, ri + h*K2/2, vi + h*G2/2)
+        G3 = g(ti + h/2, ri + h*G2/2, vi + h*K2/2)
 
         K4 = f(ti + h , ri + h*G3, vi + h*K3)
         G4 = g(ti + h , ri + h*G3, vi + h*K3)

@@ -14,13 +14,12 @@ m2 = 5.97e24
 G  = 6.674e-11
 omega_g = -G * m1*m2 / r21**3
 
-v0 = np.array([5.0, 5.0])  # vx0, vy0
-r0 = np.array([0.0, 0.0])  # x0, y0
+r0 = np.array([0.0, 0.0]) 
+v0 = np.array([5.0, 5.0])
 t0 = 0.0
-tf = 20.0
-h = 0.1 # Gir Antall sekunder mellom hver tidspunkt
-n= int((tf - t0) / h) #Eksakt antall tidspunkter
-
+tf = 8.0
+h = 0.1 # Gir Antall sekunder mellom hver tidspunkt, bestemmer diskretisering
+n = int((tf - t0) / h) #Eksakt antall tidspunkter
 #############################################################################################
 def f(t, r, v):  # dv/dt = -(Gm2)/(r21)^3
     simpel_gravity = np.array([0.0,-9.81])
@@ -34,8 +33,6 @@ def g(t, r, v): #drdt really
 
 
 def Runge_Kutta_system(t0,r0,v0,h,n):
-
-
     
     t = np.zeros(n+1)
     r = np.zeros((n+1,2)) # Because we have 2 dimensions
@@ -56,7 +53,7 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
         G2 = g(ti + h/2, ri + h*G1/2, vi + h*K1/2)
 
         K3 = f(ti + h/2, ri + h*G2/2, vi + h*K2/2)
-        G3 = g(ti + h/2, ri + h*K2/2, vi + h*G2/2)
+        G3 = g(ti + h/2, ri + h*G2/2, vi + h*K2/2)
 
         K4 = f(ti + h , ri + h*G3, vi + h*K3)
         G4 = g(ti + h , ri + h*G3, vi + h*K3)
@@ -82,13 +79,37 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 #############################################################################################
 
 # Run simulation
-t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
+t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0,h,n)
+
 
 #############################################################################################
 
-# Plot trajectory
+# Hent verdier for projeksjonen : husk at de ser slik ut
+# r_vals = [[x0, y0],[x1, y1],[x2, y2], ...] , så verdiene våre er inni disse listene
+
+
+# Derfor henter vi slik, ved slicing 
 x_vals = r_vals[:, 0]
 y_vals = r_vals[:, 1]
+
+# Nå ser de slik ut :
+# x_vals = [x0, x1, x2, ...] 
+# y_vals = [y0, y1, y2, ...] 
+
+x_analytic = 5.0 * 8
+y_analytic = 5.0 * 8 - 0.5 * 9.81 * 8**2
+print(f"For h = {h}\n")
+print(f"analytisk x(8), y(8): ({x_analytic:.3f}{y_analytic:.3f}) m")
+
+x_estimert=r_vals[-1][0]
+y_estimert=r_vals[-1][1]
+print(f"Slutt-posisjon (x,y) etter 8 sekunder: ({x_estimert:.3f},{y_estimert:.3f}) m \n")
+
+
+
+
+###############################################################################################
+# Plotting og animasjon
 
 # Moving animation man 
 from matplotlib.animation import FuncAnimation
@@ -104,12 +125,20 @@ def animate(i):
 ani = FuncAnimation(fig, animate, frames=len(t_vals), 
                     interval=20, blit=True)
 
+# Beregn kinetisk energi
+
+def kinetic_energy(v):
+    return 0.5 * m1 * np.dot(v, v)
+print("Slutthastighet (vx,vy) etter 8 sekunder:", v_vals[-1], "m/s ")
+print("Initial KE:", kinetic_energy(v0))
+print("Final KE:", kinetic_energy(v_vals[-1]))
+
 
 plt.plot(x_vals, y_vals,color= "red")
 plt.gca().set_aspect('equal')
-plt.title("Charged Particle in Magnetic Field")
-plt.xlabel("r")
-plt.ylabel("v")
+plt.title("Partikkelbane i gravitasjonsfelt")
+plt.xlabel("x (m)")
+plt.ylabel("y (m)")
 plt.grid(True)
 ani.save("Grav_throw1.gif" , writer='pillow', fps=20)
 plt.show()
