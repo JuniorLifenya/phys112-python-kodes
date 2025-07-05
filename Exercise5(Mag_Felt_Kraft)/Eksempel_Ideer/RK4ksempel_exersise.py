@@ -15,7 +15,7 @@ g_acc= 9.81
 r0 = np.array([0.0, 0.0]) 
 v0 = np.array([5.0, 5.0])
 t0 , tf = 0.0 , 8.0
-h = 0.1 # Gir Antall sekunder mellom hver tidspunkt, bestemmer diskretisering
+h = 0.3 # Gir Antall sekunder mellom hver tidspunkt, bestemmer diskretisering
 n = int((tf - t0) / h) #Eksakt antall tidspunkter
 #############################################################################################
 def f(t, r, v):  # dv/dt = -(Gm2)/(r21)^3
