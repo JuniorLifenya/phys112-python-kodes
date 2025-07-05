@@ -7,19 +7,20 @@ import matplotlib.pyplot as plt
 # Define the functions for the system of ODEs
 
 # Constants
-m1 = 0.45    # mass
+m1 = 0.45 
+g_acc= 9.81
 
 # Initial values
 r0 = np.array([0.0, 0.0]) 
 v0 = np.array([5.0, 5.0])
-t0 , tf , h = 0.0 ,8.0
+t0 , tf = 0.0 ,8.0
 h = 0.1 # Gir Antall sekunder mellom hver tidspunkt, bestemmer diskretisering
 n = int((tf - t0) / h) #Eksakt antall tidspunkter
 #############################################################################################
 
 #Måten vi skriver difflikningene som flervariable funksjoner hjelper for senere kompleksitet#
 def f(t, r, v):  # dv/dt = -g, alternativ : dv/dt = -(Gm2)/(r21)^3
-    simpel_gravity = np.array([0.0,-9.81])
+    simpel_gravity = np.array([0.0,-g_acc])
     return simpel_gravity 
 
 def g(t, r, v): #dr/dt = v
@@ -39,7 +40,7 @@ def Euler_system(t0,r0,v0,h,n):
         ri = r[i]
         vi = v[i]
 
-        #Definert slik for å kunne se likheter med runge kutta metoden
+        #Definert slik for å kunne se likheter med runge kutta metoden senere 
         K1 = f(ti,ri,vi) # Egentlig akselerasjonen a = dvdt
         G1 = g(ti,ri,vi) # Egentlig hastigheten v = drdt
 
@@ -70,12 +71,15 @@ y_vals = r_vals[:, 1]
 # x_vals = [x0, x1, x2, ...] 
 # y_vals = [y0, y1, y2, ...] 
 
-x_analytic = 5.0 * 8
-y_analytic = 5.0 * 8 - 0.5 * 9.81 * 8**2
+# Analytisk løsning
+x_analytic = v0[0] * tf
+y_analytic = v0[1] * tf - 0.5 * g_acc * tf**2
+
+
 print(f"For h = {h}\n")
 print(f"analytisk x(8), y(8): ({x_analytic:.3f}{y_analytic:.3f}) m")
 
-x_estimert=r_vals[-1][0]
+x_estimert=r_vals[-1][0] # Raskere alternativ med indeksering x_estimert = r_vals[-1,0]
 y_estimert=r_vals[-1][1]
 print(f"Slutt-posisjon (x,y) etter 8 sekunder: ({x_estimert:.3f},{y_estimert:.3f}) m \n")
 
@@ -108,11 +112,11 @@ print("Final KE:", kinetic_energy(v_vals[-1]))
 
 plt.plot(x_vals, y_vals,color= "red")
 plt.gca().set_aspect('equal')
-plt.title("Partikkelbane i gravitasjonsfelt Euler (h=0.1)")
+plt.title(f"Partikkelbane i gravitasjonsfelt Euler (h= {h})")
 plt.xlabel("x (m)")
 plt.ylabel("y (m)")
 plt.grid(True)
-ani.save("Euler_h.1_Kast.gif" , writer='pillow', fps=20)
+ani.save(f"Euler_h{h}_Kast.gif" , writer='pillow', fps=20)
 plt.show()
 
 
