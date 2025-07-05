@@ -17,22 +17,28 @@ import matplotlib.pyplot as plt
 
 q = 1.0
 m = 1.0
-B0 = 1.0
+B0 = 2.0 
+
+# Initial values
+v0 = np.array([0.0, 1.0,0.0])  # vx0, vy0, vz0
+r0 = np.array([0.0, 0.0,0.0])  # x0, y0
+t0 = 0.0
+tf = 150.0 #Endre på denne av hengig av oppgaven
+h = 0.4 # Denne kan endres på avhengig av oppgaven
 
 #############################################################################################
 #############################################################################################
 # Define the functions for the system of ODEs
 
-def B_felt(t,r):
-    x, y = r
-    const_B = [0.0, 0.0, B0]
-    var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)]
-    return np.array(var_B)  # Constant B in z
-def f(t, r, v):  # dv/dt = (q/m) * v x B
-    B = B_felt(t, r)
-    v3d = np.array([v[0], v[1], 0.0])  # pad v to 3D
-    cross = np.cross(v3d, B)
-    return (q / m) * cross  # return only x,y parts (2D vector)
+def B_felt(t,r,v):
+    x, y, z = r
+    const_B = [0.0, 0.0, B0] # Uniform sircular motion
+    var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion outward
+    return np.array(var_B) 
+    
+def f(t, r, v):
+    B = B_felt(t, r, v)
+    return (q / m) * np.cross(v, B)
 
 #############################################################################################
 #############################################################################################
@@ -40,10 +46,10 @@ def f(t, r, v):  # dv/dt = (q/m) * v x B
 def g(t, r, v): #drdt really 
     return v
 
-def Runge_Kutta_system(t0,r0,v0,h,n):
+def Runge_Kutta_system(t0,r0,v0,h):
 
-    #t0,tf = 0.0 , 20.0
-    #n= int((tf - t0) / h) #Alternative 
+    
+    n= int((tf - t0) / h) #Alternative 
     
     t = np.zeros(n+1)
     r = np.zeros((n+1,3))
@@ -64,7 +70,7 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
         G2 = g(ti + h/2, ri + h*G1/2, vi + h*K1/2)
 
         K3 = f(ti + h/2, ri + h*G2/2, vi + h*K2/2)
-        G3 = g(ti + h/2, ri + h*K2/2, vi + h*G2/2)
+        G3 = g(ti + h/2, ri + h*G2/2, vi + h*K2/2)
 
         K4 = f(ti + h , ri + h*G3, vi + h*K3)
         G4 = g(ti + h , ri + h*G3, vi + h*K3)
@@ -78,45 +84,72 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 #############################################################################################
 #############################################################################################
 
+#For watching EVERY step(like teacher wanted)
 
-n = int (input ( " Please enter number of iterations ")) #For watching EVERY step(like teacher wanted)
 
-# For perfect sircle motion #####################################
+
+# For perfect sircle motion ##################################################################
 
 #period = 2 * np.pi / (q * B0 / m)  # 2*pi / omega_c
 #tf = period * 1  # for one full circle
 #h = 0.01
 #n = int(tf / h)
-#################################################################
+#############################################################################################
 
-# Initial values
-v0 = np.array([0.0, 1.0,1.0])  # vx0, vy0
-r0 = np.array([0.0, 0.0])  # x0, y0
-t0 = 0.0
-h = 0.01
+
 # Run simulation
-t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
+t_vals, r_vals, v_vals = Runge_Kutta_system(0.0, r0, v0,h) # This is our state 
+
+#############################################################################################
 
 # Plot trajectory
 x_vals = r_vals[:, 0]
 y_vals = r_vals[:, 1]
+z_vals = r_vals[:, 1]
 
 def kinetic_energy(v):
     return 0.5 * m * np.dot(v, v)
 
-print("Initial KE:", kinetic_energy(v0))
-print("Final KE:", kinetic_energy(v_vals[-1]))
+initial_KE = kinetic_energy(v0)
+final_KE = kinetic_energy(v_vals[-1])
+energy_loss = 100 * (initial_KE - final_KE) / initial_KE
 
-fig = plt.figure(figsize=(8, 8))
-ax = fig.add_subplot(111, projection="3d")
-plt.plot(x_vals, y_vals,color= "orange")
+
+print("Initial KE:", initial_KE)
+print(f"Final KE: {final_KE:.2f}")
+print(f"Energitap: {energy_loss:.2f}%")
+#############################################################################################
+
+plt.xlim(-1.5, 3.75)
+plt.ylim(-2.5, 2.75)
+plt.plot(x_vals, y_vals,color= "r")
 plt.gca().set_aspect('equal')
-plt.title("Charged Particle in Magnetic Field")
+plt.title("Charged Particle in changing Magnetic Field")
 plt.xlabel("r")
 plt.ylabel("v")
 plt.grid(True)
 plt.show()
 
 # At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals
+
+#############################################################################################
+
+# Moving animation man 
+from matplotlib.animation import FuncAnimation
+fig, ax = plt.subplots()
+line, = ax.plot([], [], '-', color="r")
+ax.set_xlim(-1.5, 3.75)
+ax.set_ylim(-2.5, 2.75)
+
+def animate(i):
+    line.set_data(r_vals[:i,0], r_vals[:i,1])
+    return line,
+
+ani = FuncAnimation(fig, animate, frames=len(t_vals), 
+                    interval=20, blit=True,)
+plt.grid(True)
+plt.show()
+
 #############################################################################################
 #############################################################################################
+

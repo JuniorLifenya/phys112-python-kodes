@@ -30,7 +30,7 @@ def B_felt(t,r):
     return np.array(var_B)  # Constant B in z
 def E_field(t, r): # New expanded with also electric field now
     # Example: oscillating electric field in x direction
-    return np.array([np.sin(t), 0.0])
+    return np.array([0.5*np.sin(t), 0.0])
 
 def f_new(t, r, v):
     B = B_felt(t, r)

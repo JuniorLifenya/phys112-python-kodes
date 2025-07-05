@@ -17,28 +17,22 @@ import matplotlib.pyplot as plt
 
 q = 1.0
 m = 1.0
-B0 = 2.0 
-
-# Initial values
-v0 = np.array([0.0, 1.0,0.0])  # vx0, vy0, vz0
-r0 = np.array([0.0, 0.0,0.0])  # x0, y0
-t0 = 0.0
-tf = 150.0
-h = 0.1 # Gives different effects like deeper spiral , etc 
+B0 = 1.0
 
 #############################################################################################
 #############################################################################################
 # Define the functions for the system of ODEs
 
-def B_felt(t,r,v):
-    x, y, z = r
-    const_B = [0.0, 0.0, B0] # Uniform sircular motion
-    var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion outward
-    return np.array(var_B) 
-    
-def f(t, r, v):
-    B = B_felt(t, r, v)
-    return (q / m) * np.cross(v, B)
+def B_felt(t,r):
+    x, y = r
+    const_B = [0.0, 0.0, B0]
+    var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)]
+    return np.array(const_B)  # Constant B in z
+def f(t, r, v):  # dv/dt = (q/m) * v x B
+    B = B_felt(t, r)
+    v3d = np.array([v[0], v[1], 0.0])  # pad v to 3D
+    cross = np.cross(v3d, B)
+    return (q / m) * cross[:2] # return only x,y parts (2D vector)
 
 #############################################################################################
 #############################################################################################
@@ -46,14 +40,14 @@ def f(t, r, v):
 def g(t, r, v): #drdt really 
     return v
 
-def Runge_Kutta_system(t0,r0,v0,h):
+def Runge_Kutta_system(t0,r0,v0,h,n):
 
-    
-    n= int((tf - t0) / h) #Alternative 
+    #t0,tf = 0.0 , 20.0
+    #n= int((tf - t0) / h) #Alternative 
     
     t = np.zeros(n+1)
-    r = np.zeros((n+1,3))
-    v = np.zeros((n+1,3))
+    r = np.zeros((n+1,2))
+    v = np.zeros((n+1,2))
 
     t[0] = t0
     r[0] = r0 
@@ -84,72 +78,43 @@ def Runge_Kutta_system(t0,r0,v0,h):
 #############################################################################################
 #############################################################################################
 
-#For watching EVERY step(like teacher wanted)
 
+n = int (input ( " Please enter number of iterations ")) #For watching EVERY step(like teacher wanted)
 
-
-# For perfect sircle motion ##################################################################
+# For perfect sircle motion #####################################
 
 #period = 2 * np.pi / (q * B0 / m)  # 2*pi / omega_c
 #tf = period * 1  # for one full circle
 #h = 0.01
 #n = int(tf / h)
-#############################################################################################
+#################################################################
 
-
+# Initial values
+v0 = np.array([0.0, 1.0])  # vx0, vy0
+r0 = np.array([0.0, 0.0])  # x0, y0
+t0 = 0.0
+h = 0.01
 # Run simulation
-t_vals, r_vals, v_vals = Runge_Kutta_system(0.0, r0, v0,h) # This is our state 
-
-#############################################################################################
+t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
 
 # Plot trajectory
 x_vals = r_vals[:, 0]
 y_vals = r_vals[:, 1]
-z_vals = r_vals[:, 1]
 
 def kinetic_energy(v):
     return 0.5 * m * np.dot(v, v)
 
-initial_KE = kinetic_energy(v0)
-final_KE = kinetic_energy(v_vals[-1])
-energy_loss = 100 * (initial_KE - final_KE) / initial_KE
+print("Initial KE:", kinetic_energy(v0))
+print("Final KE:", kinetic_energy(v_vals[-1]))
 
-
-print("Initial KE:", initial_KE)
-print(f"Final KE: {final_KE:.2f}")
-print(f"Energitap: {energy_loss:.2f}%")
-#############################################################################################
-
-plt.xlim(-1.5, 3.75)
-plt.ylim(-2.5, 2.75)
-plt.plot(x_vals, y_vals,color= "r")
+plt.plot(x_vals, y_vals,color= "orange")
 plt.gca().set_aspect('equal')
-plt.title("Charged Particle in changing Magnetic Field")
+plt.title("Charged Particle in Magnetic Field")
 plt.xlabel("r")
 plt.ylabel("v")
 plt.grid(True)
 plt.show()
 
 # At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals
-
-#############################################################################################
-
-# Moving animation man 
-from matplotlib.animation import FuncAnimation
-fig, ax = plt.subplots()
-line, = ax.plot([], [], '-', color="r")
-ax.set_xlim(-1.5, 3.75)
-ax.set_ylim(-2.5, 2.75)
-
-def animate(i):
-    line.set_data(r_vals[:i,0], r_vals[:i,1])
-    return line,
-
-ani = FuncAnimation(fig, animate, frames=len(t_vals), 
-                    interval=20, blit=True,)
-plt.grid(True)
-plt.show()
-
 #############################################################################################
 #############################################################################################
-
