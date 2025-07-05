@@ -5,15 +5,12 @@ import matplotlib.pyplot as plt
 #############################################################################################
 
 # Define the functions for the system of ODEs
-# Initial values
+
 
 # Constants
-r21 = 6.4e6
 m1 = 0.45    # mass
-m2 = 5.97e24
-G  = 6.674e-11
-omega_g = -G * m1*m2 / r21**3
 
+# Initial values
 r0 = np.array([0.0, 0.0]) 
 v0 = np.array([5.0, 5.0])
 t0 = 0.0
@@ -38,9 +35,8 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
     r = np.zeros((n+1,2)) # Because we have 2 dimensions
     v = np.zeros((n+1,2)) # Because we have v = [vx,vy]
 
-    t[0] = t0
-    r[0] = r0 
-    v[0] = v0
+    t[0],r[0],v[0] = t0 , r0, v0
+    
     for i in range (n):
         ti = t[i]
         ri = r[i]
@@ -137,11 +133,11 @@ print("Final KE:", kinetic_energy(v_vals[-1]))
 
 plt.plot(x_vals, y_vals,color= "red")
 plt.gca().set_aspect('equal')
-plt.title("Partikkelbane i gravitasjonsfelt")
+plt.title("Partikkelbane i gravitasjonsfelt RK4 (h=0.1)")
 plt.xlabel("x (m)")
 plt.ylabel("y (m)")
 plt.grid(True)
-ani.save("Grav_throw1.gif" , writer='pillow', fps=20)
+ani.save("RK4_h.1_Kast.gif" , writer='pillow', fps=20)
 plt.show()
 
 #############################################################################################

@@ -19,25 +19,30 @@ q = 1.0
 m = 1.0
 B0 = 1.0
 
+# Initial values
+v0 = np.array([0.0, 1.0,0.0])  # vx0, vy0
+r0 = np.array([0.0, 0.0,0.0])  # x0, y0
+t0 = 0.0
+h = 0.01
 #############################################################################################
 #############################################################################################
 # Define the functions for the system of ODEs
 
 def B_felt(t,r):
-    x, y = r
+    x, y , z= r
     const_B = [0.0, 0.0, B0] # Uniform sircular motion
     var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion 
     return np.array(var_B)  # Constant B in z
 def E_field(t, r): # New expanded with also electric field now
     # Example: oscillating electric field in x direction
-    return np.array([0.5*np.sin(t), 0.0])
+    return np.array([0.5*np.sin(t), 0.0,0.0])
 
 def f_new(t, r, v):
     B = B_felt(t, r)
     E = E_field(t, r)
     v3d = np.array([v[0], v[1], 0.0])
     Lorentz_force = q/m * (E + np.cross(v3d, B))
-    return Lorentz_force[:2]
+    return Lorentz_force
 
 def f(t, r, v):  # dv/dt = (q/m) * v x B
     B = B_felt(t, r)
@@ -57,8 +62,8 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
     #n= int((tf - t0) / h) #Alternative 
     
     t = np.zeros(n+1)
-    r = np.zeros((n+1,2))
-    v = np.zeros((n+1,2))
+    r = np.zeros((n+1,3))
+    v = np.zeros((n+1,3))
 
     t[0] = t0
     r[0] = r0 
@@ -100,11 +105,7 @@ n = int (input ( " Please enter number of iterations ")) #For watching EVERY ste
 #n = int(tf / h)
 #################################################################
 
-# Initial values
-v0 = np.array([0.0, 1.0])  # vx0, vy0
-r0 = np.array([0.0, 0.0])  # x0, y0
-t0 = 0.0
-h = 0.01
+
 # Run simulation
 t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
 

@@ -123,7 +123,6 @@ print(f"Energitap: {energy_loss:.2f}%")
 plt.xlim(-1.5, 3.75)
 plt.ylim(-2.5, 2.75)
 plt.plot(x_vals, y_vals,color= "r")
-plt.gca().set_aspect('equal')
 plt.title("Charged Particle in changing Magnetic Field")
 plt.xlabel("r")
 plt.ylabel("v")
@@ -133,6 +132,7 @@ plt.show()
 # At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals
 
 #############################################################################################
+
 
 # Moving animation man 
 from matplotlib.animation import FuncAnimation
