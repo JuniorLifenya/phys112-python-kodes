@@ -120,11 +120,23 @@ print("Initial KE:", kinetic_energy(v0))
 print("Final KE:", kinetic_energy(v_vals[-1]))
 
 
-plt.plot(x_vals, y_vals,color= "orange")
+fig, ax = plt.subplots(figsize=(8, 8))
+
+# Start and end points in 2D
+ax.scatter([r0[0]], [r0[1]], c='r', s=50, label='Start')
+
+# Use 2D position at last time step
+ax.scatter([r_vals[-1, 0]], [r_vals[-1, 1]], c='b', s=50, label='End')
+
+# Full trajectory
+ax.plot(r_vals[:, 0], r_vals[:, 1], color='g', label='Trajectory')
+
+
+
 plt.gca().set_aspect('equal')
 plt.title("Charged Particle in Magnetic Field")
-plt.xlabel("r")
-plt.ylabel("v")
+ax.set_xlabel("x (m)", fontsize=14)
+ax.set_ylabel("y (m)", fontsize=14)
 plt.grid(True)
 plt.show()
 

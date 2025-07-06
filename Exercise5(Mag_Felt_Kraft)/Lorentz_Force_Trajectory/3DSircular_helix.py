@@ -20,11 +20,11 @@ m1 = .45
 B0 = 1.0
 
 # Initial values
-v0 = np.array([0.0, 5.0, 2.0])  # vx, vy, vz
+v0 = np.array([0.0, 12.0, 2.0])  # vx, vy, vz
 r0 = np.array([7.0, 0.0, 0.0])  # x, y, z
 
 t0 = 0.0
-tf = 20.0  # End time
+tf = 8.0  # End time
 h = 0.1
 n= int((tf - t0) / h) #Alternative 
 #############################################################################################
@@ -134,7 +134,6 @@ ax.legend()
 ax.grid(True)
 ani.save('3D_particle_motion_varB.gif', writer='pillow', fps=20)
 plt.show()
-
 
 
 # At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals
