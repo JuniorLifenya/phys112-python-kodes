@@ -16,14 +16,16 @@ import matplotlib.pyplot as plt
 #############################################################################################
 
 q = 1.0
-m = 1.0
+m = 1.5
 B0 = 1.0
 
 # Initial values
 v0 = np.array([0.0, 1.0,0.0])  # vx0, vy0
 r0 = np.array([0.0, 0.0,0.0])  # x0, y0
 t0 = 0.0
+tf = 150.0 #Endre på denne avhengig av oppgaven
 h = 0.01
+n= int((tf - t0) / h) #Alternative
 #############################################################################################
 #############################################################################################
 # Define the functions for the system of ODEs
@@ -57,9 +59,6 @@ def g(t, r, v): #drdt really
     return v
 
 def Runge_Kutta_system(t0,r0,v0,h,n):
-
-    #t0,tf = 0.0 , 20.0
-    #n= int((tf - t0) / h) #Alternative 
     
     t = np.zeros(n+1)
     r = np.zeros((n+1,3))
@@ -93,10 +92,6 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 
 #############################################################################################
 #############################################################################################
-
-
-n = int (input ( " Please enter number of iterations ")) #For watching EVERY step(like teacher wanted)
-
 # For perfect sircle motion #####################################
 
 #period = 2 * np.pi / (q * B0 / m)  # 2*pi / omega_c
@@ -124,14 +119,11 @@ fig, ax = plt.subplots(figsize=(8, 8))
 
 # Start and end points in 2D
 ax.scatter([r0[0]], [r0[1]], c='r', s=50, label='Start')
-
 # Use 2D position at last time step
 ax.scatter([r_vals[-1, 0]], [r_vals[-1, 1]], c='b', s=50, label='End')
-
 # Full trajectory
 ax.plot(r_vals[:, 0], r_vals[:, 1], color='g', label='Trajectory')
-
-
+ax.legend()
 
 plt.gca().set_aspect('equal')
 plt.title("Charged Particle in Magnetic Field")

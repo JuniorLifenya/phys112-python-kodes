@@ -29,12 +29,14 @@ def B_felt(t,r):
     var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion 
     return np.array(var_B) 
 
-def f(t, r, v):
+def f(t, r, v): # dv/dt = (q/m) * v x B 
     B = B_felt(t, r)
     v3d = np.array([v[0], v[1], 0.0])
     force = q/m * np.cross(v3d, B)
     drag = -gamma * v  # gamma = damping coefficient
     return force[:2] + drag
+# This function returns the Lorentz force and damping force as a 2D vector, written as
+# (q/m) * v x B + (-gamma * v)
 
 #############################################################################################
 #############################################################################################
