@@ -23,7 +23,7 @@ B0 = 1.0
 v0 = np.array([0.0, 5.0])  # vx0, vy0
 r0 = np.array([7.0, 0.0])  # x0, y0
 t0 = 0.0
-tf = 8.0  # End time
+tf = 50.0  # End time
 h = 0.1
 n= int((tf - t0) / h) #Alternative 
 #############################################################################################
@@ -32,9 +32,8 @@ n= int((tf - t0) / h) #Alternative
 
 def B_felt(t,r):
     x, y = r
-    const_B = [0.0, 0.0, -B0]
-    var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)]
-    return np.array(const_B)  # Constant B in z
+    var_B= [0.0,0.0,1+0.5 * np.sin(x) + 0.3 * np.cos(y)]
+    return np.array(var_B)  # Constant B in z
 def f(t, r, v):  # dv/dt = (q/m) * v x B
     B = B_felt(t, r)
     v3d = np.array([v[0], v[1], 0.0])  # pad v to 3D
@@ -96,11 +95,18 @@ t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n) # Tilstanden etter 
 x_vals = r_vals[:, 0]
 y_vals = r_vals[:, 1]
 
+
 def kinetic_energy(v):
     return 0.5 * m1 * np.dot(v, v)
 
-print("Initial KE:", kinetic_energy(v0))
-print("Final KE:", kinetic_energy(v_vals[-1]))
+KE_initial = kinetic_energy(v0)
+KE_final = kinetic_energy(v_vals[-1])
+
+print(f"Initial kinetic energy: {KE_initial:.6f} J")
+print(f"Final kinetic energy: {KE_final:.6f} J")
+print(f"Energy difference: {KE_final - KE_initial:.6f} J")
+print(f"Absolute energy difference: {abs(KE_final - KE_initial):.6f} J")
+print(f"Relative energy difference: {abs(KE_final - KE_initial)/KE_initial:.6%}")
 
 # Plotting og animasjon
 #############################################################################################
@@ -129,15 +135,20 @@ def animate(i):
 ani = FuncAnimation(fig, animate, frames=len(t_vals), 
                     interval=30, blit=True)
 
+# For å vite start og sluttpunktet
+ax.plot(x_vals, y_vals, 'g-', linewidth=1.5, label='Trajectory')
+ax.scatter([r0[0]], [r0[1]], c='r', s=50, label='Start')
+ax.scatter([x_vals[-1]], [y_vals[-1]], c='b', s=50, label='End')
+ax.legend()
 
 ax.set_xlim(-1, 14)
 ax.set_ylim(-5, 5)
 plt.plot(x_vals, y_vals,color= "g")
-plt.gca().set_aspect('equal')
-plt.title(f" Partikkel-sirkelbane (h= {h})")
+plt.title(f" Partikkel-varierende Bane med (h= {h}) etter {tf} sekunder")
 plt.xlabel("x (m)")
 plt.ylabel("y (m)")
 plt.grid(True)
+plt.savefig("Partikkel-varierende_Bane(50s).png", dpi=300, bbox_inches='tight')
 plt.show()
 
 # At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals

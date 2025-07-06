@@ -280,4 +280,4 @@ animer_3d_bane(pos_speil, "magnetisk_speil.gif")
 
 # Øk simuleringstiden for magnetisk speil
 t_max_speil = 50e-6  # Fra 20e-6 til 50e-6
-t, pos_speil, v_speil = simuler_bane(q, m, B_func_speil, r0, v0_speil, t_max_speil, dt)
+t, pos_speil, v_speil = simuler_bane(q, m, B_func_speil, r0, v0_speil, t_max_speil, dt) 
