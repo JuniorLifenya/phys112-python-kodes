@@ -126,7 +126,7 @@ ax.scatter([r0[0]], [r0[1]], [r0[2]], c='r', s=50, label='Start')
 ax.scatter([x_vals[-1]], [y_vals[-1]], [z_vals[-1]], c='b', s=50, label='End')
 
 # Animation setup
-line, = ax.plot([], [], [], '-', color="r", markersize=6)
+line, = ax.plot([], [], [], 'o-', color="r", markersize=6)
 def animate(i):
     line.set_data(r_vals[:i, 0], r_vals[:i, 1])
     line.set_3d_properties(r_vals[:i, 2])
