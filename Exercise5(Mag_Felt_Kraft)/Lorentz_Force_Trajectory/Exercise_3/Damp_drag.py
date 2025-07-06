@@ -127,7 +127,7 @@ plt.grid(True)
 plt.savefig("Partikkel-drag_Bane(50s).png", dpi=300, bbox_inches='tight')
 plt.show()
 
-# At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals
+
 #############################################################################################
 #############################################################################################
 
