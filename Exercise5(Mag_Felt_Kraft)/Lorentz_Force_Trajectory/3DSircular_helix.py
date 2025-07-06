@@ -130,6 +130,10 @@ ax.set_xlabel('X (m)')
 ax.set_ylabel('Y (m)')
 ax.set_zlabel('Z (m)')
 ax.set_title(f'3D Charged Particle Motion in non-constant Magnetic Field after {tf} seconds')
+
+# Set viewing angle for better perspective
+ax.view_init(elev=30, azim=45)  # Elevation and azimuth angles
+
 ax.legend()
 ax.grid(True)
 ani.save('3D_particle_motion_varB.gif', writer='pillow', fps=20)
