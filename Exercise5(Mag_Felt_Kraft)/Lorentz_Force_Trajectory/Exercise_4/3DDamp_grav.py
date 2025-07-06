@@ -111,9 +111,10 @@ print("Final KE:", kinetic_energy(v_vals[-1]))
 # Plotting og animasjon
 #############################################################################################
 #############################################################################################
-
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation
+
+
 
 # 3D Plotting
 fig = plt.figure(figsize=(10, 8))
@@ -125,7 +126,7 @@ ax.scatter([r0[0]], [r0[1]], [r0[2]], c='r', s=50, label='Start')
 ax.scatter([x_vals[-1]], [y_vals[-1]], [z_vals[-1]], c='b', s=50, label='End')
 
 # Animation setup
-line, = ax.plot([], [], [], 'o-', color="r", markersize=6)
+line, = ax.plot([], [], [], '-', color="r", markersize=6)
 def animate(i):
     line.set_data(r_vals[:i, 0], r_vals[:i, 1])
     line.set_3d_properties(r_vals[:i, 2])
@@ -137,14 +138,14 @@ ani = FuncAnimation(fig, animate, frames=len(t_vals), interval=30, blit=True)
 ax.set_xlabel('X (m)')
 ax.set_ylabel('Y (m)')
 ax.set_zlabel('Z (m)')
-ax.set_title(f'3D Charged Particle damp-Motion in Magnetic Field after {tf} seconds')
+ax.set_title(f'3D Ladet Partikkel dempet-trajeksjon etter {tf} seconds')
 
 # Set viewing angle for better perspective
 ax.view_init(elev=30, azim=45)  # Elevation and azimuth angles
 
 ax.legend()
 ax.grid(True)
-ani.save('3D_particle_motion_dampF.gif', writer='pillow', fps=20)
+ani.save('3D_partikkel_bane_dampF.gif', writer='pillow', fps=20)
 plt.show()
 
 

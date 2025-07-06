@@ -7,11 +7,15 @@ q = 1.0
 m = 1.0
 omega = 1.0  # Angular frequency for the figure-eight
 
-# Time parameters
+
+# Initial conditions
+r0 = np.array([0.0, 0.0])
+v0 = np.array([1, 1])  # dx/dt = ω, dy/dt = ω at t=0
 t0 = 0.0
 tf = 4 * np.pi  # Two full cycles of the figure-eight
 h = 0.01
 n_steps = int((tf - t0) / h)
+
 
 #############################################################################################
 
@@ -19,10 +23,11 @@ n_steps = int((tf - t0) / h)
 def E_field(t):
     Ex = -m/q * omega**2 * np.sin(omega*t)
     Ey = -m/q * 2 * omega**2 * np.sin(2*omega*t)
-    return np.array([Ex, Ey])
+    E_vector = np.array([Ex, Ey])
+    return E_vector
 
 def B_field(t, r):
-    return np.array([0.0, 0.0, 0.0])
+    return np.array([0.0, 0.0])
 
 # Equations of motion
 def f(t, r, v):  # dv/dt = q/m (E + v × B)
@@ -70,34 +75,8 @@ def rk4_system(t0, r0, v0, h, n):
         
     return t, r, v
 
-# Initial conditions (match parametric equations)
-r0 = np.array([0.0, 0.0])
-v0 = np.array([omega, omega])  # dx/dt = ω, dy/dt = ω at t=0
-t0 = 0.0
-
 # Run simulation
 t_vals, r_vals, v_vals = rk4_system(t0, r0, v0, h, n_steps)
-
-from matplotlib.animation import FuncAnimation
-
-
-fig, ax = plt.subplots()
-line, = ax.plot([], [], 'o-')
-ax.set_xlim(-1.5, 1.5)
-ax.set_ylim(-1.5, 1.5)
-
-#############################################################################################
-#############################################################################################
-
-# Auto animation man###########################################
-
-def animate(i):
-    line.set_data(r_vals[:i,0], r_vals[:i,1])
-    return line,
-
-ani = FuncAnimation(fig, animate, frames=len(t_vals), 
-                    interval=20, blit=True)
-plt.show()
 
 #############################################################################################
 #############################################################################################
@@ -110,7 +89,6 @@ plt.xlabel("x")
 plt.ylabel("y")
 plt.gca().set_aspect('equal')
 plt.grid(True)
-
 plt.show()
 
 #############################################################################################
