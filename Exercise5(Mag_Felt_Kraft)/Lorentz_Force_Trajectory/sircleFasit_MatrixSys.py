@@ -94,7 +94,7 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 #################################################################
 
 # Run simulation
-t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n) # type: ignore
+t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n) # Tilstanden etter n steg
 
 # Plot trajectory
 x_vals = r_vals[:, 0]
