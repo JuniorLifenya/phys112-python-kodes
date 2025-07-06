@@ -15,12 +15,12 @@ import matplotlib.pyplot as plt
 #############################################################################################
 #############################################################################################
 # Constants
-q = 1.0
+q = 1.0 # Positive ladninger følger høyre håndsregelen her, negative følger venstre håndsregelen
 m1 = .45
 B0 = 1.0
 
 # Initial values
-v0 = np.array([0.0, 6.0])  # vx0, vy0
+v0 = np.array([0.0, 5.0])  # vx0, vy0
 r0 = np.array([7.0, 0.0])  # x0, y0
 t0 = 0.0
 tf = 8.0  # End time
@@ -110,7 +110,7 @@ print("Final KE:", kinetic_energy(v_vals[-1]))
 #############################################################################################
 #############################################################################################
 
-X = np.arange(-1, 11, 1)   # Fewer points for clarity
+X = np.arange(-1, 15, 1)   # Fewer points for clarity
 Y = np.arange(-5, 6, 1)
 X, Y = np.meshgrid(X, Y)
 
@@ -134,7 +134,7 @@ ani = FuncAnimation(fig, animate, frames=len(t_vals),
                     interval=30, blit=True)
 
 
-ax.set_xlim(-1, 10)
+ax.set_xlim(-1, 14)
 ax.set_ylim(-5, 5)
 plt.plot(x_vals, y_vals,color= "g")
 plt.gca().set_aspect('equal')
