@@ -16,27 +16,36 @@ import matplotlib.pyplot as plt
 #############################################################################################
 
 q = 1.0
-m = 1.0
+m = 0.45
 B0 = 2.0 # Changes for how many steps with have full revolution
-gamma = 0.2
+k = 0.2
+
+# Initial values
+v0 = np.array([0.0, 1.0])  # vx0, vy0
+r0 = np.array([0.0, 0.0])  # x0, y0
+t0 = 0.0
+h = 0.05
+tf = 10.0  # End time
+n = int((tf - t0) / h)  # Number of steps
 #############################################################################################
 #############################################################################################
 # Define the functions for the system of ODEs
 
 def B_felt(t,r):
     x, y = r
-    const_B = [0.0, 0.0, B0] # Uniform sircular motion
     var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)] # Spiral motion 
     return np.array(var_B) 
 
 def f(t, r, v): # dv/dt = (q/m) * v x B 
     B = B_felt(t, r)
     v3d = np.array([v[0], v[1], 0.0])
-    force = q/m * np.cross(v3d, B)
-    drag = -gamma * v  # gamma = damping coefficient
-    return force[:2] + drag
+    bforce = q/m * np.cross(v3d, B)
+    gravforce = np.array([0.0, 0.0, -9.81])  # Gravity force in z direction
+    dragforce = k * v  # gamma = damping coefficient
+    Ftot = bforce[:2] + gravforce[:2] + dragforce  # Total force including gravity and damping
+    return Ftot
 # This function returns the Lorentz force and damping force as a 2D vector, written as
-# (q/m) * v x B + (-gamma * v)
+# Ftot= (q/m) * v x B + (-gamma * v) + gforce
 
 #############################################################################################
 #############################################################################################
@@ -83,53 +92,39 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 #############################################################################################
 
 
-n = int (input ( " Please enter number of iterations ")) #For watching EVERY step(like teacher wanted)
-#############################################################################################
 
-# Initial values
-v0 = np.array([0.0, 1.0])  # vx0, vy0
-r0 = np.array([0.0, 0.0])  # x0, y0
-t0 = 0.0
-h = 0.05
 # Run simulation
 t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
-
-#############################################################################################
-
-# Moving animation man 
-from matplotlib.animation import FuncAnimation
-fig, ax = plt.subplots()
-line, = ax.plot([], [], 'o-')
-ax.set_xlim(-1.5, 1.5)
-ax.set_ylim(-1.5, 1.5)
-
-def animate(i):
-    line.set_data(r_vals[:i,0], r_vals[:i,1])
-    return line,
-
-ani = FuncAnimation(fig, animate, frames=len(t_vals), 
-                    interval=20, blit=True)
-plt.show()
-
-#############################################################################################
 
 # Plot trajectory
 x_vals = r_vals[:, 0]
 y_vals = r_vals[:, 1]
 
-def kinetic_energy(v):
-    return 0.5 * m * np.dot(v, v)
 
-print("Initial KE:", kinetic_energy(v0))
-print("Final KE:", kinetic_energy(v_vals[-1]))
+#############################################################################################
+     
+fig, ax = plt.subplots(figsize=(10, 5))
+# Moving animation man 
+from matplotlib.animation import FuncAnimation
+line, = ax.plot([], [], '-', color="green")
+def animate(i):
+    line.set_data(r_vals[:i,0], r_vals[:i,1])
+    return line,
 
+ani = FuncAnimation(fig, animate, frames=len(t_vals), 
+                    interval=30, blit=True)
 
-plt.plot(x_vals, y_vals,color= "orange")
-plt.gca().set_aspect('equal')
-plt.title("Charged Particle in Magnetic Field")
-plt.xlabel("r")
-plt.ylabel("v")
+ax.plot(x_vals, y_vals, '-', linewidth=1.5, label='Trajectory', color  = "green")
+ax.scatter([r0[0]], [r0[1]],c='red', s=50, label='Start')
+ax.scatter([x_vals[-1]], [y_vals[-1]], c='b', s=50, label='End')
+ax.legend()
+
+plt.plot(x_vals, y_vals,color= "orange") # type: ignore
+plt.title(f" Partikkel-varierende Bane med (h= {h}) etter {tf} sekunder")
+plt.xlabel("x (m)")
+plt.ylabel("y (m)")
 plt.grid(True)
+plt.savefig("Partikkel-drag_Bane(50s).png", dpi=300, bbox_inches='tight')
 plt.show()
 
 # At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals

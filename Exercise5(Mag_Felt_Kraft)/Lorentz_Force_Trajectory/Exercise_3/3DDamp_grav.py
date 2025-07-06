@@ -16,12 +16,12 @@ import matplotlib.pyplot as plt
 #############################################################################################
 # Constants
 q = 1.0 # Positive ladninger følger høyre håndsregelen her, negative følger venstre håndsregelen
-m1 = .45
+m1 = 0.45
 B0 = 1.0
 
 # Initial values
 v0 = np.array([0.0, 12.0, 0.0])  # vx, vy, vz
-r0 = np.array([7.0, 0.0, 7.0])  # x, y, z
+r0 = np.array([7.0, 7.0, 7.0])  # x, y, z
 
 t0 = 0.0
 tf = 8.0  # End time

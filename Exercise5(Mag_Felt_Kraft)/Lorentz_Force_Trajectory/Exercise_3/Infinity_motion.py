@@ -104,7 +104,6 @@ plt.show()
 
 # Plot
 plt.figure(figsize=(10, 5))
-plt.subplot(1, 2, 1)
 plt.plot(r_vals[:, 0], r_vals[:, 1], 'b-')
 plt.title("Infinity Sign Trajectory")
 plt.xlabel("x")
@@ -112,18 +111,6 @@ plt.ylabel("y")
 plt.gca().set_aspect('equal')
 plt.grid(True)
 
-
-
-# Phase space plot
-plt.subplot(1, 2, 2)
-plt.plot(r_vals[:, 0], v_vals[:, 0], 'r-', label='x phase space')
-plt.plot(r_vals[:, 1], v_vals[:, 1], 'b-', label='y phase space')
-plt.title("Phase Space Trajectory")
-plt.xlabel("x")
-plt.ylabel("P=mv")
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
 plt.show()
 
 #############################################################################################
