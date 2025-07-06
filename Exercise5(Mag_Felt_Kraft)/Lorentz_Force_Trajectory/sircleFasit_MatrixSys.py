@@ -14,25 +14,32 @@ import matplotlib.pyplot as plt
 
 #############################################################################################
 #############################################################################################
-
+# Constants
 q = 1.0
-m = 1.0
+m1 = .45
 B0 = 1.0
 
+# Initial values
+v0 = np.array([0.0, 6.0])  # vx0, vy0
+r0 = np.array([7.0, 0.0])  # x0, y0
+t0 = 0.0
+tf = 8.0  # End time
+h = 0.1
+n= int((tf - t0) / h) #Alternative 
 #############################################################################################
 #############################################################################################
 # Define the functions for the system of ODEs
 
 def B_felt(t,r):
     x, y = r
-    const_B = [0.0, 0.0, B0]
+    const_B = [0.0, 0.0, -B0]
     var_B= [0.0,0.0,1 + 0.5 * np.sin(x) + 0.3 * np.cos(y)]
     return np.array(const_B)  # Constant B in z
 def f(t, r, v):  # dv/dt = (q/m) * v x B
     B = B_felt(t, r)
     v3d = np.array([v[0], v[1], 0.0])  # pad v to 3D
     cross = np.cross(v3d, B)
-    return (q / m) * cross[:2] # return only x,y parts (2D vector)
+    return (q / m1) * cross[:2] # return only x,y parts (2D vector)
 
 #############################################################################################
 #############################################################################################
@@ -42,8 +49,8 @@ def g(t, r, v): #drdt really
 
 def Runge_Kutta_system(t0,r0,v0,h,n):
 
-    #t0,tf = 0.0 , 20.0
-    #n= int((tf - t0) / h) #Alternative 
+    
+   
     
     t = np.zeros(n+1)
     r = np.zeros((n+1,2))
@@ -78,10 +85,7 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 #############################################################################################
 #############################################################################################
 
-
-n = int (input ( " Please enter number of iterations ")) #For watching EVERY step(like teacher wanted)
-
-# For perfect sircle motion #####################################
+############################# For perfect sircle motion #####################################
 
 #period = 2 * np.pi / (q * B0 / m)  # 2*pi / omega_c
 #tf = period * 1  # for one full circle
@@ -89,31 +93,58 @@ n = int (input ( " Please enter number of iterations ")) #For watching EVERY ste
 #n = int(tf / h)
 #################################################################
 
-# Initial values
-v0 = np.array([0.0, 1.0])  # vx0, vy0
-r0 = np.array([0.0, 0.0])  # x0, y0
-t0 = 0.0
-h = 0.01
 # Run simulation
-t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n)
+t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0, h,n) # type: ignore
 
 # Plot trajectory
 x_vals = r_vals[:, 0]
 y_vals = r_vals[:, 1]
 
 def kinetic_energy(v):
-    return 0.5 * m * np.dot(v, v)
+    return 0.5 * m1 * np.dot(v, v)
 
 print("Initial KE:", kinetic_energy(v0))
 print("Final KE:", kinetic_energy(v_vals[-1]))
 
-plt.plot(x_vals, y_vals,color= "orange")
+# Plotting og animasjon
+#############################################################################################
+#############################################################################################
+
+X = np.arange(-1, 11, 1)   # Fewer points for clarity
+Y = np.arange(-5, 6, 1)
+X, Y = np.meshgrid(X, Y)
+
+fig, ax = plt.subplots()
+ax.set_aspect('equal')
+
+# Plot crosses to represent field going into the screen
+for i in range(X.shape[0]):
+    for j in range(X.shape[1]):
+        ax.text(X[i, j], Y[i, j], '•', fontsize=14, ha='center', va='center', color='b')
+        
+
+# Moving animation man 
+from matplotlib.animation import FuncAnimation
+line, = ax.plot([], [], 'o-', color="r")
+def animate(i):
+    line.set_data(r_vals[:i,0], r_vals[:i,1])
+    return line,
+
+ani = FuncAnimation(fig, animate, frames=len(t_vals), 
+                    interval=30, blit=True)
+
+
+ax.set_xlim(-1, 10)
+ax.set_ylim(-5, 5)
+plt.plot(x_vals, y_vals,color= "g")
 plt.gca().set_aspect('equal')
-plt.title("Charged Particle in Magnetic Field")
-plt.xlabel("r")
-plt.ylabel("v")
+plt.title(f" Partikkel-sirkelbane (h= {h})")
+plt.xlabel("x (m)")
+plt.ylabel("y (m)")
 plt.grid(True)
 plt.show()
+
+
 
 # At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals
 #############################################################################################
