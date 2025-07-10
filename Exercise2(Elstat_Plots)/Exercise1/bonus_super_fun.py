@@ -62,8 +62,8 @@ plt.show()
 
 # "I denne animasjonen flytter vi ladningen gradvis, og feltet oppdateres momentant i hvert bilde. 
 # Men i virkeligheten ville endringen i feltet spre seg med lysets hastighet – feltet 'vet' ikke umiddelbart at ladningen har flyttet seg."
-#"Akkurat som Zenons pil – som ser ut til å stå stille i hvert øyeblikk – simulerer vi bevegelse gjennom en serie stillbilder. 
-# Det gir en illusjon av dynamikk, men det mangler den fysiske 'limet' som er tid, hastighet og signalpropagasjon."
+#"Akkurat som Zenos pil – som ser ut til å stå stille i hvert øyeblikk – simulerer vi bevegelse gjennom en serie stillbilder. 
+# Det gir en illusjon av dynamikk, men det mangler det fysiske 'limet' som er tid!, hastighet og signalpropagasjon."
 #"Dette er grunnen til at vi trenger elektrodynamikk og Maxwells ligninger – for å modellere felt som virkelig beveger seg i rom og tid."
-# Så egentlig når du vil vite feltet E ved et punkt r og tid t, så må du vite hva den gjorde på et tidligere tidspunkt t_ret = t-abs(r-r'(t_ret))/c
+# Så egentlig når du vil vite feltet E ved et punkt r og tid t, så må du vite hva den gjorde på et tidligere tidspunkt t_ret = t-abs(r-r'(t_ret))/c (Dette er retarded time)
 # Når ladningen akselererer → feltet rundt endres → feltet får bølger som sprer seg utover:
