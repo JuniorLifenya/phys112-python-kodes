@@ -138,7 +138,9 @@ plt.title(f" Partikkel-sirkelbane (h= {h})")
 plt.xlabel("x (m)")
 plt.ylabel("y (m)")
 plt.grid(True)
+ani.save('2D_sirkelbane.gif', writer='pillow', fps=20)
 plt.show()
+
 
 # At 627 iterations, the particle makes a perfect circle revolution, But Ek_0 != EK_f still decimals
 #############################################################################################
