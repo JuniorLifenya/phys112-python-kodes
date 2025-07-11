@@ -29,7 +29,7 @@ def g(t, r, v): #drdt really
 #############################################################################################
 
 
-def Runge_Kutta_system(t0,r0,v0,h,n):
+def Runge_Kutta_system(f,g,t0,r0,v0,h,n):
     
     t = np.zeros(n+1)
     r = np.zeros((n+1,2)) # Because we have 2 dimensions
@@ -75,7 +75,7 @@ def Runge_Kutta_system(t0,r0,v0,h,n):
 #############################################################################################
 
 # Run simulation
-t_vals, r_vals, v_vals = Runge_Kutta_system(t0, r0, v0,h,n)
+t_vals, r_vals, v_vals = Runge_Kutta_system(f,g,t0, r0, v0,h,n)
 
 
 #############################################################################################
