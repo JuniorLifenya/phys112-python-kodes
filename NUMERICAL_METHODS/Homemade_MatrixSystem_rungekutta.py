@@ -57,6 +57,8 @@ def Runge_Kutta_system(t0,t1,x0,y0,h,n):
 
 t,t1,x, y = Runge_Kutta_system(0.0,5.0, 6.0,4.0, 0.02)
 
+print(Runge_Kutta_system)
+
 # Convert to Python lists
 t_list = t.tolist()
 x_list = x.tolist()

@@ -3,7 +3,7 @@ import numpy as np
 
 
 def f(x,y): #dydx = (3x-2y)/(x+2y)
-    return (3*x-2*y)/(x+2*y)
+    return (3*x+y)/(x+2*y)
 
 def runge_kutta_calc(x0 ,y0,x1 ,h ): # Her definerer vi metoden som skal brukes
 
@@ -20,6 +20,6 @@ def runge_kutta_calc(x0 ,y0,x1 ,h ): # Her definerer vi metoden som skal brukes
         #I tillegg fordi antall steg n er definert av x1-x0/h så må x oppdateres
     return y
     
-# Nå tester vi
+# Nå tester vis
 
 print(runge_kutta_calc(0.3,5.0,0.9,0.1))
