@@ -34,7 +34,7 @@ def dydx(x, y):
     return (np.sin(x) - 5 * y**2) / 3
 
 # RK4 vektorimplementering
-def rungeKuttaVector(x0, y0, x1, h):
+def rungeKuttaVector(x0,x1, y0, h):
     n = int((x1- x0) / h)
     x = np.zeros(n + 1)
     y = np.zeros(n + 1)
@@ -52,11 +52,29 @@ def rungeKuttaVector(x0, y0, x1, h):
         x[i + 1] = xi + h
     return x, y
 
-# Testverdier
-x0, y0, x1, h = 0.3, 5.0, 0.9, 0.3  # Mindre h for bedre nøyaktighet
-x, y = rungeKuttaVector(x0, y0, x1, h)
-print(f"Vector RK4: y({x1}) = {y[-1]:.4f}")
+# Output testing for h = 0.1
+x0, x1 = 0.3, 0.9
+y0 , h = 5.0, 0.1
 
+x, y = rungeKuttaVector(x0,x1, y0, h)
+print(f"Vector RK4: y({y}) = {y[-1]:.4f}")
+
+# Testing for h = 0.01
+ha = 0.01
+xa, ya = rungeKuttaVector(x0,x1, y0, ha)  
+print(f"Vector RK4: y({ya}) = {y[-1]:.4f}")
+################################################################################################
+# Plotting
+plt.figure (figsize= (10, 6))
+plt.plot(x, y, label =f"RK4-løsning med(h={h})", color="orange", marker='o', markersize=3)
+plt.plot(xa, ya, label=f"RK4-løsning med (h={ha})", color="g", marker='o', markersize=3)
+plt.title(r"Løsninger for $\frac{dy}{dx} = \frac{\sin(x) - 5y^2}{3}$ med RK4-metoden")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.grid(True)
+plt.legend()
+plt.savefig("NUMERICAL_METHODS/runge_kutta_plot_B.png")  # Save the plot as an image
+#plt.show()
 ################################################################################################
 
 ## Nå utvider vi til x'' = -x' + 6x til systemet:
@@ -124,4 +142,5 @@ plt.xlabel("t")
 plt.ylabel("x(t) og x'(t)")
 plt.grid(True)
 plt.legend()
+plt.savefig("NUMERICAL_METHODS/runge_kutta_plot_C.png")
 plt.show()
