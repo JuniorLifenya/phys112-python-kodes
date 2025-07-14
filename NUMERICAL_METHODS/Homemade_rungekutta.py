@@ -22,15 +22,16 @@ def runge_kutta_calc(x0 ,y0,x1 ,h ): # Alternative specify the datatype x0 : flo
     n = int ((delta))
     
     y = y0 
-    for i in range(1, n+1,1) : 
+    for i in range(n):
     
         k1 = f(x0,y)
 
         k2 = f(x0 + h/2, y + h*k1/2)
+        k3 = f(x0 + h/2, y + h*k2/2)
+        k4 = f(x0 + h , y + h*k3)
 
-
-        y += h*(k1 + k2 )/2.0
-        x0 +=  h 
+        y += h*(k1 + 2*k2 + 2*k3 + k4)/6.0
+        x0 += h 
     return y
     
 # Now we test 

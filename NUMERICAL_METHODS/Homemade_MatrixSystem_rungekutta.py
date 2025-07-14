@@ -22,8 +22,9 @@ def g(t,x,y):
 
 
 
-def Runge_Kutta_system(t0,x0,y0,h,n):
+def Runge_Kutta_system(t0,t1,x0,y0,h,n):
 
+    n = int ((t1 - t0) / h) # Antall steg
     
     t = np.zeros(n+1)
     x = np.zeros(n+1)
@@ -54,9 +55,7 @@ def Runge_Kutta_system(t0,x0,y0,h,n):
         t[i+1] = t[i] + h 
     return t,x,y
 
-n = int (input ( " Please enter number of iterations "))
-
-t,x, y = Runge_Kutta_system(0.0, 6.0,4.0, 0.02,n)
+t,t1,x, y = Runge_Kutta_system(0.0,5.0, 6.0,4.0, 0.02)
 
 # Convert to Python lists
 t_list = t.tolist()
