@@ -12,10 +12,11 @@ tf = 8.0 # Sluttidspunkt i sekunder
 h = 0.01 # Steglengde i sekunder / discretisering
 n = int((tf - t0) / h) # Antall tidspunkter
 Vc0 = 0.0 # Startspenning i kondensatoren i volt
+Vin = 0.0 # Inngangsspenning i volt
 ##########################################################################################################
 
 def f(t,Vc): # Vår dydx = (Vin-Vc)/RC = f(t,Vc)
-    y = (- Vc) / (R * C) 
+    y = (Vin- Vc) / (R * C) 
     return y
 ##########################################################################################################
 
