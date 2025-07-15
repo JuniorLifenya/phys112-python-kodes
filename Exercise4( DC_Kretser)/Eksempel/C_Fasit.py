@@ -7,8 +7,9 @@ import numpy as np
 
 # This code solves a system of ordinary differential equations using the Runge-Kutta method.
 # For systems like this one here :
-# dx/dt = f(t,x,y,z) = x + 2 * y
-# dy/dt = g(t,x,y,z) = 3*x+2*y
+
+# dy/dt = f(t,x,y,z) = 3x + y
+# dx/dt = g(t,x,y,z) = x + 2y
 
 ########################################################################
 
@@ -18,7 +19,7 @@ def f(t,x,y):
 def g(t,x,y):
     return x + 2 * y
 
-def Runge_Kutta_system(t0,t1,x0,y0,h,n):
+def Huens_system(t0,t1,x0,y0,h,n):
 
     t = np.zeros(n+1)
     x = np.zeros(n+1)
@@ -36,11 +37,11 @@ def Runge_Kutta_system(t0,t1,x0,y0,h,n):
         K1 = f(ti,xi,yi)
         G1 = g(ti,xi,yi)
 
-        y_gjett = yi + h*f(ti,xi,yi)
-        x_gjett = xi + h*g(ti,xi,yi)
+        y_gjett = yi + h*K1
+        x_gjett = xi + h*G1
         
-        K2 = f(ti + h/2, xi + h*(K1+x_gjett)/2, yi + h*(G1+y_gjett)/2)
-        G2 = g(ti + h/2, xi + h*(K1+ x_gjett)/2, yi + h*(G1 + y_gjett)/2)
+        K2 = f(ti + h, x_gjett, y_gjett)
+        G2 = g(ti + h, x_gjett, y_gjett)
 
 
         x[i+1] = xi + h/2 * (K1 + K2)
@@ -55,7 +56,7 @@ y0 = 5.0
 h = 0.1
 n = int ((t1 - t0) / h) # Antall steg
 
-t_verdi,x_verdi,y_verdi = Runge_Kutta_system(t0,t1,x0,y0,h,n)
+t_verdi,x_verdi,y_verdi = Huens_system(t0,t1,x0,y0,h,n)
 print("Tid:", t_verdi)
 
 # Siste verdi av x og y etter siste iterasjon, altså etter t = 0.9 sekunder
@@ -71,7 +72,7 @@ import numpy as np
 def f(x,y): #dydx = (3x-2y)/(x+2y)
     return (3*x+y)/(x+2*y)
 
-def runge_kutta_calc(x0,y0,x1 ,h ): # Her definerer vi metoden som skal brukes
+def Huens_calc(x0,y0,x1 ,h ): # Her definerer vi metoden som skal brukes
 
     n = int ((x1-x0)/h)
     
@@ -79,9 +80,9 @@ def runge_kutta_calc(x0,y0,x1 ,h ): # Her definerer vi metoden som skal brukes
     for i in range(n) : 
     
         k1 = f(x0,y)
-        y_gjett += h*k1
+        y_gjett = y + h*k1
 
-        k2 = f(x0 + h/2, y + h*(k1+y_gjett)/2)
+        k2 = f(x0 + h, y_gjett)
         
         y += (h/2.0)*(k1 + k2 )
         x0 +=  h # Siden vi ikke har en x-variabel i arrayet, så må vi oppdatere den manuelt,
@@ -90,4 +91,18 @@ def runge_kutta_calc(x0,y0,x1 ,h ): # Her definerer vi metoden som skal brukes
     
 # Nå tester vis
 
-print(runge_kutta_calc(0.3,5.0,0.9,0.1))
+print(Huens_calc(0.3,5.0,0.9,0.1))
+
+#################################################################################
+
+# Visualisering #
+
+import matplotlib.pyplot as plt
+plt.plot(t_verdi, x_verdi, label='x(t)')
+plt.plot(t_verdi, y_verdi, label='y(t)')
+plt.legend()
+plt.grid(True)
+plt.xlabel('Tid t')
+plt.ylabel('Verdi')
+plt.title('Løsning av systemet med Heun\'s metode')
+plt.show()

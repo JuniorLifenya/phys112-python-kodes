@@ -7,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 # Parametre
 V0 = 5.0             # Startspenning
 C = 470e-6           # Kapasitans
-R = 1000             # Motstand
+R = 1e3             # Motstand
 V_thresh = 3.0       # Terskelspenning
 h = 0.01             # Tidssteg
 t_max = 5.0

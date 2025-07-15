@@ -38,8 +38,8 @@ def RK2_metode(f,t0,y0,h,n): # Det er ingen fysiske forflytninger her i y og x ,
         yi = y[i]
 
         k1 = f(ti, yi)
-        k2 = f(ti + h, yi + k1*h/2)
-        k3 = f(ti + h, yi + k2*h)
+        k2 = f(ti + h/2, yi + k1*h/2)
+        k3 = f(ti + h/2, yi + k2*h)
     
         y[i+1] = yi + h*(k1 + 4*k2 + k3)/6.0  
         t[i+1] = ti + h
