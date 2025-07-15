@@ -21,8 +21,6 @@ def g(t,x,y):
 
 def Runge_Kutta_system(t0,t1,x0,y0,h,n):
 
-    
-    
     t = np.zeros(n+1)
     x = np.zeros(n+1)
     y = np.zeros(n+1)
@@ -38,19 +36,15 @@ def Runge_Kutta_system(t0,t1,x0,y0,h,n):
         K1 = f(ti,xi,yi)
         G1 = g(ti,xi,yi)
 
-        K2 = f(ti + h/2, xi + h*K1/2, yi + h*G1/2)
-        G2 = g(ti + h/2, xi + h*K1/2, yi + h*G1/2)
+        K2 = f(ti + h/2, xi + h*K1/2, yi + h*G1)
+        G2 = g(ti + h/2, xi + h*K1/2, yi + h*G1)
 
-        K3 = f(ti + h/2, xi + h*K2/2, yi + h*G2/2)
-        G3 = g(ti + h/2, xi + h*K2/2, yi + h*G2/2)
 
-        K4 = f(ti + h , xi + h*K3, yi + h*G3)
-        G4 = g(ti + h , xi + h*K3, yi + h*G3)
-
-        x[i+1] = x[i] + h/6 * (K1 + 2*K2 + 2*K3 + K4)
-        y[i+1] = y[i] + h/6 * (G1 + 2*G2 + 2*G3 + G4)
+        x[i+1] = x[i] + h/2 * (K1 + K2)
+        y[i+1] = y[i] + h/2 * (G1 + G2 )
         t[i+1] = t[i] + h 
     return t,x,y
+
 t0 = 0.0
 t1 = 0.9
 x0 = 0.3
@@ -58,4 +52,10 @@ y0 = 5.0
 h = 0.1
 n = int ((t1 - t0) / h) # Antall steg
 
-print(Runge_Kutta_system(t0,t1,x0,y0,h,n))
+t_verdi,x_verdi,y_verdi = Runge_Kutta_system(t0,t1,x0,y0,h,n)
+print("Tid:", t_verdi)
+
+# Siste verdi av x og y etter siste iterasjon, altså etter t = 0.9 sekunder
+print("x(t):", x_verdi[-1])  
+print("y(t):", y_verdi[-1])  
+

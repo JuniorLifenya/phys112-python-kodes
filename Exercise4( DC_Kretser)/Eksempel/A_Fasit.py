@@ -5,7 +5,7 @@ import numpy as np
 def f(x,y): #dydx = (3x-2y)/(x+2y)
     return (3*x+y)/(x+2*y)
 
-def runge_kutta_calc(x0 ,y0,x1 ,h ): # Her definerer vi metoden som skal brukes
+def runge_kutta_calc(x0,y0,x1 ,h ): # Her definerer vi metoden som skal brukes
 
     n = int ((x1-x0)/h)
     
