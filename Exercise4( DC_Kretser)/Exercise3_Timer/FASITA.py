@@ -15,10 +15,11 @@ n = int((t_slutt - t0) / h) # Antall tidspunkter
 Vc0 = 0.0 # Startspenning i kondensatoren i volt
 V_thresh = 3.0  
 t_vals = np.linspace(0, t_slutt, n)
+Vin = 0
 ##########################################################################################################
 
 def f(t,Vc): # Vår dydx = (Vin-Vc)/RC = f(t,Vc)
-    y = (- Vc) / (tau) 
+    y = (Vin- Vc) / (tau) 
     return y
 ##########################################################################################################
 
@@ -39,9 +40,10 @@ def RK2_metode(f,t0,y0,h,n): # Det er ingen fysiske forflytninger her i y og x ,
 
         k1 = f(ti, yi)
         k2 = f(ti + h/2, yi + k1*h/2)
-        k3 = f(ti + h/2, yi + k2*h)
-    
-        y[i+1] = yi + h*(k1 + 4*k2 + k3)/6.0  
+        k3 = f(ti + h/2, yi + k2*h/2)
+        k4 = f(ti + h, yi + k3*h)
+
+        y[i+1] = yi + h*(k1 + 2*k2 + 2*k3 + k4)/6.0  
         t[i+1] = ti + h
         
     return t,y
@@ -53,7 +55,7 @@ def V_eksakt(t):
 ###########################################################################################################
 
 # --- Kjøring av Runge-Kutta 2 ---
-t , V_rk2 = RK2_metode(f,t0,Vc0,h,n) # This returns a two things vector like stuff like v = (t,y)
+t , V_rk2 = RK2_metode(f,t0,Vc0,h,n) 
 
 V_korrekt = V_eksakt(t) # Beregner den eksakte løsningen for sammenligning
 
@@ -69,3 +71,4 @@ plt.ylabel("Spenning over kondensator (V)")
 plt.grid(True)
 plt.legend()
 plt.show()
+
