@@ -7,21 +7,20 @@ R = 1e3 # Motstand i ohm
 C = 100e-6 # Kapasitans i farad
 V0= 5.0 # Spenning i volt
 t0 = 0.0 # Starttidspunkt i sekunder
-tf = 8.0 # Sluttidspunkt i sekunder
+tf = 0.4 # Sluttidspunkt i sekunder
 
-h = 0.01 # Steglengde i sekunder / discretisering
+h = 0.1 # Steglengde i sekunder / discretisering
 n = int((tf - t0) / h) # Antall tidspunkter
 Vc0 = 0.0 # Startspenning i kondensatoren i volt
-Vin = 0.0 # Inngangsspenning i volt
 ##########################################################################################################
 
 def f(t,Vc): # Vår dydx = (Vin-Vc)/RC = f(t,Vc)
-    y = (Vin- Vc) / (R * C) 
+    y = (V0- Vc) / (R * C) 
     return y
 ##########################################################################################################
 
 ### Runge-Kutta 2. Dette er egentlig et midpunkt-metode ##################################################
-def RK2_metode(f,t0,y0,h,n): # Det er ingen fysiske forflytninger her i y og x , men bare t 
+def RK3_metode(f,t0,tf,y0,h,n): # Det er ingen fysiske forflytninger her i y og x , men bare t 
 
     # Initierer arrays for tid og spenning der vi lagrer resultatene
     
@@ -31,7 +30,7 @@ def RK2_metode(f,t0,y0,h,n): # Det er ingen fysiske forflytninger her i y og x ,
     t[0] = t0
     y[0] = y0 
 
-    for i in range(0,n,1): # Could have just written range(n) also hehe 
+    for i in range(n): # Could have just written range(n) also hehe 
         ti = t[i]
         yi = y[i]
 
@@ -51,19 +50,22 @@ def V_eksakt(t):
 ###########################################################################################################
 
 # --- Kjøring av Runge-Kutta 2 ---
-t , V_rk2 = RK2_metode(f,t0,Vc0,h,n) # This returns a two things vector like stuff like v = (t,y)
+t , V_rk3 = RK3_metode(f,t0,tf,Vc0,h,n) # This returns a two things vector like stuff like v = (t,y)
 
 V_korrekt = V_eksakt(t) # Beregner den eksakte løsningen for sammenligning
 
+print(f"V_c(t) etter {tf} sekunder: {V_rk3[-1]:.2f} V")
 
 #####################################################################################################
 # --- Plot ---
 plt.figure(figsize=(10,6))
-plt.plot(t, V_rk2, label="RK2-løsning", color="blue")
-plt.plot(t, V_korrekt, '--', label="Analytisk løsning", color="black")
+plt.plot(t, V_rk3, label="RK2-løsning", color="blue")
+plt.plot(t, V_korrekt, '--', label="Analytisk løsning", color="orange" , marker ='o', markersize=3)
 plt.title("Lading av kondensator i RC-krets med RK2")
 plt.xlabel("Tid (s)")
 plt.ylabel("Spenning over kondensator (V)")
 plt.grid(True)
+
 plt.legend()
+plt.savefig("kondensator_lading_rk3.png")
 plt.show()
