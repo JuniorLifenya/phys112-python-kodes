@@ -10,7 +10,7 @@ epsilon_0 = 8.85e-12
 K = 1/(4 * np.pi * epsilon_0)
 
 df = pd.read_csv("ladninger.csv")
-q_C = df["charge"].to_numpy()*1e9 # List of the charge number
+q_C = df["charge"].to_numpy()*1e-9 # List of the charge number
 q_xpos = df["pos_x"].to_numpy() # List of all charges 
 q_ypos = df["pos_y"].to_numpy()
 
@@ -46,7 +46,7 @@ K  = 1 / (4 * np.pi * ε0)
 df = pd.read_csv('ladninger.csv')
 
 # Ekstraher og konverter til SI-enheter
-q = df["charge"].to_numpy()*1e-9  # nC → C
+q = df["charge"].to_numpy()*1e-9  # C -> nC
 x = df["pos_x"].to_numpy()          # meter
 y = df["pos_y"].to_numpy()          # meter
 
@@ -74,7 +74,7 @@ epsilon_0 = 8.854e-12
 K = 1 / (4 * np.pi * epsilon_0)
 
 df = pd.read_csv("ladninger.csv")
-q_C = df["charge"].to_numpy() *1e-9 # C to nC
+q_C = df["charge"].to_numpy() *1e-9 # C -> nC
 q_xpos = df["pos_x"].to_numpy()
 q_ypos = df["pos_y"].to_numpy()
 
