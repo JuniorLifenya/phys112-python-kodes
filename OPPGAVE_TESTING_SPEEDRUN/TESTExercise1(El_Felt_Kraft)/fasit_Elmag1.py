@@ -11,7 +11,7 @@ def E(q, x, y):
     dx = 0 - x
     dy = 0 - y
 
-    r = np.sqrt(dx**2 + dy**2)
+    r = np.sqrt(dx**2 + dy**2) + 1e-10 # Unngå dele på 0 
 
     Ex = K*(q)/(r**3)*dx
     Ey = K*(q)/(r**3)*dy
@@ -22,7 +22,7 @@ def E(q, x, y):
 """ B) """
 df = pd.read_csv("ladninger.csv")
 
-q = df["charge"].to_numpy()*10**(-9)
+q = df["charge"].to_numpy()*1e-9
 x = df["pos_x"].to_numpy()
 y = df["pos_y"].to_numpy()
 
@@ -34,6 +34,6 @@ Ex_sum = np.sum(Ex)
 Ey_sum = np.sum(Ey)
 E_sum = np.sqrt(Ex_sum**2 + Ey_sum**2)
 
-print(f"Fx = {Ex_sum:.3e} N")
-print(f"Fy = {Ey_sum:.3e} N")
-print(f" F = {E_sum:.3e} N")
+print(f"Ex = {Ex_sum:.3e} N/C") #FIX
+print(f"Ey = {Ey_sum:.3e} N/C")
+print(f" |E| = {E_sum:.3e} N/C")
