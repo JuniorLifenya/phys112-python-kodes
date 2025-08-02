@@ -23,7 +23,7 @@ def E_loop(q,x,y):
         qi , xi , yi = q[i] , x[i] , y[i]
         r0 = [0,0] # To avoid directly deviding by 0 
         
-        ri0 = np.sqrt((r0[0]-xi)**2 + (r0[1]-yi)**2) + 1e-12 # Include a small epsilon here 
+        ri0 = np.sqrt((r0[0]-xi)**2 + (r0[1]-yi)**2) + 1e-10 # Include a small epsilon here 
         øi = np.arctan2(-yi,-xi) # arctan2 takes two arguments, and dont accumalte charges with +=
 
         Ex += K*np.cos(øi)* (qi)/(ri0**3)
@@ -115,3 +115,4 @@ print(f"Ey = {Ey:.3e} N/C")
 print(f"E = {E_total:.3e} N/C")
 
 ##############################################################################################
+
