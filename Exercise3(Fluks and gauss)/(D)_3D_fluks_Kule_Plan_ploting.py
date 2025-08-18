@@ -33,7 +33,7 @@ ax = fig.add_subplot(111, projection="3d")
 ################ Definerer kulen i 3D #########################################
 
 radius = 3  # Kule-radius
-kulens_oppløsning = 500
+kulens_oppløsning = 10
 phi = np.linspace(0, np.pi, kulens_oppløsning)  # Polar vinkel
 theta = np.linspace(0, 2 * (np.pi), kulens_oppløsning)  # Azimutal vinkel
 ø, t = np.meshgrid(phi, theta)
