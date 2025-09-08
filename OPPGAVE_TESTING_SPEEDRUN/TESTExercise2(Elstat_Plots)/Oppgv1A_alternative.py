@@ -75,10 +75,11 @@ ftot = np.log(np.abs(M+N)) # Tar logaritmen av absoluttverd
 
 #----------Plotting-------------------------------------------------------------------------------#
 
-fig , (ax) = plt.subplots(figsize=(2,2))
-Nivåkurvene = ax.contour(X, Y, ftot, levels=50, cmap="turbo") # type: ignore # Viser nivåkurvene til potensialet
+fig , (ax1, ax2) = plt.subplots(figsize=(2,2), ncols=2)
+Nivåkurvene = ax1.contourf(X, Y, ftot, levels=50, cmap="viridis") # type: ignore # Viser nivåkurvene til potensialet
 
-E_Retnings_felt= ax.streamplot(X,Y,U,V, color="black", density=1, arrowsize=1) # Trengs egentlig ikke siden oppgaven ber om nivåkurver
+
+E_Retnings_felt= ax2.streamplot(X,Y,U,V, color="black", density=1, arrowsize=1) # Trengs egentlig ikke siden oppgaven ber om nivåkurver
 
 plt.scatter(x1,y1,color = "red", s=200) #Positiv ladning
 plt.scatter(x2,y2,color = "blue", s=200) #Negativ ladning
