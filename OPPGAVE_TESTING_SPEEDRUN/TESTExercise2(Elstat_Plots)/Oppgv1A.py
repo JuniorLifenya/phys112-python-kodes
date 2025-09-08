@@ -38,6 +38,7 @@ def  E(q, xq, yq, X, Y):
     Ey = (K*q)/(r**3)*dy
 
     return Ex,Ey
+
 Ex1,Ey1 = E(q1, x1, y1, X, Y) # Since the function returns two values, we need to call it twice for each charge
 Ex2,Ey2 = E(q2, x2, y2, X, Y)
 
@@ -47,7 +48,7 @@ Ey = Ey1 + Ey2
 U, V = Ex, Ey
 
 #----------- Potensial Funksjonen----------------------------------------------------------------#
-def P(q, xq, yq, X, Y):
+def ø(q, xq, yq, X, Y):
     """ Returnerer potensialet i (X,Y) fra ladningene """
     dx = X - xq
     dy = Y - yq
@@ -55,30 +56,20 @@ def P(q, xq, yq, X, Y):
     r = np.sqrt(dx**2 + dy**2)
     r[r==0 ]= 1e-10 # Unngå dele på 0 , setter d opp for gøy, og gode vaner 
 
-    Px = K*q/r
-    Py = K*q/r
+    ø = K*q/r
 
-    return Px,Py
+    return ø
 
-Px1,Py1 = P(q1, x1, y1, X, Y) # Since the function returns two values, we need to call it twice for each charge
-Px2,Py2 = P(q2, x2, y2, X, Y)
+#----------- Beregning av potensialet------------------------------------------------------------#
+V_tot = ø(q1, x1, y1, X, Y) + ø(q2, x2, y2, X, Y)
+V_plot = np.log(np.abs(V_tot))
 
-Px = Px1 + Px2
-Py = Py1 + Py2
+#----------Plotting------------------------------------------------------------------------------#
 
-M,N = Px, Py
+fig , ax = plt.subplots(figsize=(6,6))
+Nivåkurvene = ax.contour(X, Y, V_plot, levels=50, cmap = "turbo" , linestyles=["solid", "dashed", "dotted", "dashdot"] ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
 
-f = np.log(np.abs(M)) # Tar logaritmen av absoluttverd
-g = np.log(np.abs(N))
-
-ftot = np.log(np.abs(M+N)) # Tar logaritmen av absoluttverd
-
-#----------Plotting-------------------------------------------------------------------------------#
-
-fig , (ax) = plt.subplots(figsize=(2,2))
-Nivåkurvene = ax.contour(X, Y, ftot, levels=10, cmap = "turbo" ,linestyles=["solid", "dashed", "dotted", "dashdot"] ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
-
-E_Retnings_felt= ax.streamplot(X,Y,U,V, color="black", density=1, arrowsize=1) # Trengs egentlig ikke siden oppgaven ber om nivåkurver
+E_Retnings_felt = ax.streamplot(X,Y,U,V, color="black", density=1, arrowsize=1) # Trengs egentlig ikke siden oppgaven ber om nivåkurver
 
 plt.scatter(x1,y1,color = "red", s=200) #Positiv ladning
 plt.scatter(x2,y2,color = "blue", s=200) #Negativ ladning
@@ -99,4 +90,4 @@ plt.ylabel("y [m]")
 plt.grid()
 plt.show()
 
-#----------FINISHED -------------------------------------------------------------------------------#
+#----------FINISHED ------------------------------------------------------------------------------#
