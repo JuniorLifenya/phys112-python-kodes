@@ -67,7 +67,7 @@ V_plot = np.log(np.abs(V_tot))
 #----------Plotting------------------------------------------------------------------------------#
 
 fig , ax = plt.subplots(figsize=(6,6))
-Nivåkurvene = ax.contour(X, Y, V_plot, levels=50, cmap = "turbo" , linestyles=["solid", "dashed", "dotted", "dashdot"] ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
+Nivåkurvene = ax.contour(X, Y, V_plot, levels=20, cmap = "turbo" , linestyles=["solid", "dashed", "dotted", "dashdot"] ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
 
 E_Retnings_felt = ax.streamplot(X,Y,U,V, color="black", density=1, arrowsize=1) # Trengs egentlig ikke siden oppgaven ber om nivåkurver
 
