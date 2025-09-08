@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 #################################################################################################
 
-#----------Oppgave tekst------------------------------------------------------------------------#
+#----------Oppgave tekst-------------------------------------------------------------------------#
 "To statiske ladninger i vakuum. Den ene lokalisert på (1/2,0) [m], ladning 5*10^-17 C"
 "Den andre lokalisert på (-1/2,0) [m], ladning -5*10^-17 C"
 "Modifiser koden fra løsningsforslaget til eksempeloppgaven (tidligere) slik at den også viser"
@@ -76,7 +76,7 @@ ftot = np.log(np.abs(M+N)) # Tar logaritmen av absoluttverd
 #----------Plotting-------------------------------------------------------------------------------#
 
 fig , (ax) = plt.subplots(figsize=(2,2))
-Nivåkurvene = ax.contour(X, Y, ftot, levels=50, cmap="turbo") # type: ignore # Viser nivåkurvene til potensialet
+Nivåkurvene = ax.contour(X, Y, ftot, levels=10, cmap = "turbo" ,linestyles=["solid", "dashed", "dotted", "dashdot"] ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
 
 E_Retnings_felt= ax.streamplot(X,Y,U,V, color="black", density=1, arrowsize=1) # Trengs egentlig ikke siden oppgaven ber om nivåkurver
 
@@ -98,3 +98,5 @@ plt.ylabel("y [m]")
 
 plt.grid()
 plt.show()
+
+#----------FINISHED -------------------------------------------------------------------------------#
