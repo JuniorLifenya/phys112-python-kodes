@@ -42,8 +42,8 @@ def E(X, Y):
             rq = np.sqrt(dx**2 + dy**2)
             rq[rq==0 ]= 1e-10 # Unngå dele på 0 , setter d opp for gøy, og gode vaner
 
-            Ex += (K*qi)/(rq**3)*dx
-            Ey += (K*qi)/(rq**3)*dy
+            Ex += ((K*qi)/(rq**3)*dx)
+            Ey += ((K*qi)/(rq**3)*dy)
 
         return Ex,Ey
 
@@ -72,7 +72,7 @@ V_plot = np.log(np.abs(V_tot))
 #----------Plotting-----------------------------------------------------------------------------#
 
 fig , ax = plt.subplots(figsize=(8,8))
-Nivåkurvene = ax.contourf(X, Y, V_plot, levels=300, cmap = "turbo_r" ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
+Nivåkurvene = ax.contourf(X, Y, V_plot, levels=300, cmap = "turbo_r",  ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
 
 E_Retnings_felt = ax.streamplot(X,Y,U,V, color="black", density=1, arrowsize=1) # Trengs egentlig ikke siden oppgaven ber om nivåkurver
 
