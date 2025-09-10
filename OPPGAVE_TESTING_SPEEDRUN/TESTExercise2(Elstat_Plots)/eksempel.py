@@ -6,7 +6,7 @@ import pandas as pd
 #----------Oppgave tekst------------------------------------------------------------------------#
 "To statiske ladninger i vakuum. Den ene lokalisert på (1/2,0) [m], ladning 5*10^-17 C"
 "Den andre lokalisert på (-1/2,0) [m], ladning -5*10^-17 C"
-"Plot de elektriske feltlinjene i området x=[-1,1] og y=[-1,1]"
+"Plot de elektriske feltlinjene i området x = [-1,1] og y = [-1,1]"
 "Samt illustrere hvor ladningene er med synlige fargede sirkler."
 "Rød sirkel for positiv ladning, blå for negativ"
 

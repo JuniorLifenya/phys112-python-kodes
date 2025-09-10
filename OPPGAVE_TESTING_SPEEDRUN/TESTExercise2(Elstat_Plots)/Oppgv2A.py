@@ -3,92 +3,91 @@ import matplotlib.pyplot as plt
 import pandas as pd
 #################################################################################################
 
-#----------Oppgave tekst-------------------------------------------------------------------------#
+#----------Oppgave tekst------------------------------------------------------------------------#
 
 "Du er gitt samme CSV-fil (ladninger.csv) som i oppgave 1 "
 "Vi antar permitiviteten i vakuum, ε0 = 8.854 x 10^-12 F/m"
-"Lag et plot som viser alle de 12 ladningene i et plottet som prikker (rød for positiv, blå for negativ)"
+"Lag et plot som viser alle de 12 ladningene plottet som prikker (rød for positiv, blå for negativ)"
 "På plottet skal det også tegnes inn feltlinjene til det elektriske feltet satt opp av de 12 ladningene"
 "Sammenlign plottet med resultatet fra eksempeloppgaven om elektrisk felt og kraft. "
 "Stemmer retningen til kraften partikkelen opplever med  feltlinjene i dette plottet?"
 "Legg ved en liten kommentar på slutten som svarer på dette"
 
 
-#----------Konstanter og variabler---------------------------------------------------------------#
+#----------Konstanter og variabler--------------------------------------------------------------#
 
 EPSILON_ZERO = 8.854e-12 #F/m
 K = 1/(4*np.pi*EPSILON_ZERO)
-q1, q2 = 5e-17, -5e-17 #C
-x1, y1 = 0.5, 0 #m
-x2, y2 = -0.5, 0 #m
 
-#----------Oppsett av plan-----------------------------------------------------------------------#
-Q = pd.read_csv("ladninger.csv")
+xrange = np.linspace(-20,30,200)
+yrange = np.linspace(-30,20,200)
+
+#----------Oppsett av plan----------------------------------------------------------------------#
+
+Q = pd.read_csv("ladninger_3.csv")
 q = Q["charge"].to_numpy()*1e-9 # Ladningene er oppgitt i nC , så nå har vi C
-x = Q["x"].to_numpy()
-y = Q["y"].to_numpy()
+x = Q["pos_x"].to_numpy()
+y = Q["pos_y"].to_numpy()
+zip_info = list(zip(q,x,y))
 
-X , Y = np.meshgrid(x,y)
 # U,V = np.zeros_like(X), np.zeros_like(Y) # An alternative way to create and fill up the fields.
  
-#-------Felt-styrke Funksjonen-------------------------------------------------------------------#
+#-------Felt-styrke Funksjonen------------------------------------------------------------------#
+def E(X, Y):
+        """ Returnerer feltstyrken i x- og y-retning i (0,0) fra ladningene """
+        Ex, Ey = np.zeros_like(X), np.zeros_like(Y)
+        for qi,xi,yi in zip_info:
+            dx = X - xi
+            dy = Y - yi
+            rq = np.sqrt(dx**2 + dy**2)
+            rq[rq==0 ]= 1e-10 # Unngå dele på 0 , setter d opp for gøy, og gode vaner
 
-def  E(q, xq, yq, X, Y):
-    """ Returnerer feltstyrken i x- og y-retning i (0,0) fra ladningene """
-    dx = X - xq
-    dy = Y - yq
+            Ex += (K*qi)/(rq**3)*dx
+            Ey += (K*qi)/(rq**3)*dy
 
-    r = np.sqrt(dx**2 + dy**2)
-    r[r==0 ]= 1e-10 # Unngå dele på 0 , setter d opp for gøy, og gode vaner 
+        return Ex,Ey
 
-    Ex = (K*q)/(r**3)*dx
-    Ey = (K*q)/(r**3)*dy
+#-------Beregning av feltstyrken----------------------------------------------------------------#
 
-    return Ex,Ey
+X , Y = np.meshgrid(xrange,yrange) 
+U, V = E(X, Y)
 
-Ex1,Ey1 = E(q1, x1, y1, X, Y) # Since the function returns two values, we need to call it twice for each charge
-Ex2,Ey2 = E(q2, x2, y2, X, Y)
-
-
-Ex = Ex1 + Ex2
-Ey = Ey1 + Ey2
-U, V = Ex, Ey
-
-#----------- Potensial Funksjonen----------------------------------------------------------------#
-def ø(q, xq, yq, X, Y):
+#----------- Potensial Funksjonen---------------------------------------------------------------#
+def ø(X, Y):
     """ Returnerer potensialet i (X,Y) fra ladningene """
-    dx = X - xq
-    dy = Y - yq
+    ø = np.zeros_like(X)
+    for qi,xi,yi in zip_info:
+        dx = X - xi
+        dy = Y - yi
+        r = np.sqrt(dx**2 + dy**2) # Unngå dele på 0 , sette
+        r[r==0 ]= 1e-10 # Unngå dele på 0 , setter d opp for gøy, og gode vaner 
 
-    r = np.sqrt(dx**2 + dy**2)
-    r[r==0 ]= 1e-10 # Unngå dele på 0 , setter d opp for gøy, og gode vaner 
-
-    ø = K*q/r
+        ø += K*qi/r
 
     return ø
 
-#----------- Beregning av potensialet------------------------------------------------------------#
-V_tot = ø(q1, x1, y1, X, Y) + ø(q2, x2, y2, X, Y)
+V_tot = ø( X, Y)
 V_plot = np.log(np.abs(V_tot))
 
-#----------Plotting------------------------------------------------------------------------------#
+#----------Plotting-----------------------------------------------------------------------------#
 
-fig , ax = plt.subplots(figsize=(6,6))
-Nivåkurvene = ax.contour(X, Y, V_plot, levels=20, cmap = "turbo" , linestyles=["solid", "dashed", "dotted", "dashdot"] ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
+fig , ax = plt.subplots(figsize=(8,8))
+Nivåkurvene = ax.contourf(X, Y, V_plot, levels=300, cmap = "turbo_r" ) # cycles through) # type: ignore # Viser nivåkurvene til potensialet
 
 E_Retnings_felt = ax.streamplot(X,Y,U,V, color="black", density=1, arrowsize=1) # Trengs egentlig ikke siden oppgaven ber om nivåkurver
 
-plt.scatter(x1,y1,color = "red", s=200) #Positiv ladning
-plt.scatter(x2,y2,color = "blue", s=200) #Negativ ladning
-plt.plot(x1,y1,'ro', markersize=15) #Positiv ladning
-plt.plot(x2,y2,'bo', markersize=15) #Negativ ladning
+for qi,xi,yi in zip_info:
+    if qi > 0:
+        ax.plot(xi, yi, "ro", markersize=10)  # rød for positiv
+    if qi < 0:
+        ax.plot(xi, yi, "bo", markersize=10)  # blå for negativ
 
-plt.gca().set_aspect('equal', adjustable="box") #Setter like skala på begge aksene
 
-plt.xlim(-1,1)
-plt.ylim(-1,1)
 
-#----------Plot labels----------------------------------------------------------------------------#
+plt.gca().set_aspect('equal') #Setter like skala på begge aksene
+
+
+#----------Plot labels--------------------------------------------------------------------------#
 
 plt.title("Elektrisk felt fra to punktladninger")
 plt.xlabel("x [m]")
@@ -97,4 +96,4 @@ plt.ylabel("y [m]")
 plt.grid()
 plt.show()
 
-#----------FINISHED ------------------------------------------------------------------------------#
+#----------FINISHED ----------------------------------------------------------------------------#
